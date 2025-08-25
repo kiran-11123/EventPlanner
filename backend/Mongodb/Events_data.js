@@ -6,7 +6,7 @@ import mongoose from 'mongoose'
 const Events_details = new mongoose.Schema({
           EventName:String,
           EventImage:String,
-          EventDate:Date,
+          EventDate:String,
           Duration:String,
           Venue:String,
           OrganizedBy:String,

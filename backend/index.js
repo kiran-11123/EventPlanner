@@ -10,10 +10,10 @@ import AllEvents_Router from "./routes/AllEvents.js"
 import rateLimit from 'express-rate-limit';
 import UploadRouter from "./routes/EventUpload.js"
 
+
 const limiter = rateLimit({
-    
-  windowMs:15*60*1000,
-  max:100,
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   message:"Too Many requsts , Please try again later"
 })
 
@@ -31,6 +31,7 @@ app.use("/api/auth", Auth_router);
 app.use("/api/user" , User_Router);
 app.use("/api/eventsData",AllEvents_Router);
 app.use("/api/eventUpload" , UploadRouter);
+app.use('/uploads', express.static('uploads'));
 
 
 

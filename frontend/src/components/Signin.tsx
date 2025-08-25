@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link ,useNavigate} from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { isAdmin } from "../Recoil/atoms/AuthAtom";
 
 
 export default function Signin(){
@@ -9,6 +11,7 @@ export default function Signin(){
     const[email,setEmail] = useState('');
     const[Password,setPassword]=useState('');
     const navigate = useNavigate();
+    const[Admin ,setAdmin] = useRecoilState(isAdmin)
   
 
    async function SubmitForm(e:any) {
@@ -27,6 +30,10 @@ export default function Signin(){
 
     if(response.status === 200) {
         setMessage('Login successful');
+
+        if(email==='admin@gmail.com'){
+             setAdmin(true);
+        }
         
     setTimeout(()=>{
         setMessage('')

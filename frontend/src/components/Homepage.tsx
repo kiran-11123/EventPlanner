@@ -4,12 +4,30 @@ import { useNavigate } from "react-router-dom";
 
 import { useEffect } from "react";
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { isAdmin } from "../Recoil/atoms/AuthAtom";
+import Cookies from "js-cookie";
 
 export default function HomePage(){
     
     const navigate = useNavigate();
     const[data,setData] = useState([]);
-    const[isfound , setIsfound] = useState(true);
+    const[isfound , setIsfound] = useState(false);
+    const admin = useRecoilValue(isAdmin);
+  
+
+
+
+    function Logout(){
+        Cookies.remove("token");
+
+        localStorage.clear();
+        sessionStorage.clear();
+        navigate("/", { replace: true });
+       
+          
+
+    }
    
 
     useEffect(()=>{
@@ -25,15 +43,15 @@ export default function HomePage(){
             })
 
             console.log(response)
-            
-            if(response.status===200){
+                            
+            if (response.data.TotalData.length === 0) {
+                 setIsfound(false);
+            } 
+            else {
                 setIsfound(true);
-                 
                 setData(response.data.TotalData);
             }
-            else{
-                setIsfound(false);
-            }
+
 
         }
         catch(er){
@@ -67,20 +85,33 @@ export default function HomePage(){
             <header className="flex items-center justify-between w-full bg-white shadow-2xl h-20  rounded-lg px-4 py-2 ">
 
                 <h1 className="text-blue-700 text-md sm:text-xl font-bold ">Welcome to Home </h1>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg " onClick={ToEventUpload}>Add Event</button>
+                {admin && (
+                    <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                        onClick={ToEventUpload}
+                         >
+                             Add Event
+                    </button>
+                )}
+                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" onClick={Logout}>Logout</button>
 
             </header>
 
-            <div className="flex flex-col sm:flex-row items-center justify-between px-8 py-6 scroll-auto sm:flex-wrap gap-4 ">
-
-              {isfound ? data.map((item,index)=>(
-
-                     <div key={index} className="basis-1/3">
-                         <Card  />
-                    </div> 
-                )) : <p className="text-center sm:text-xl text-md font-bold  ">No Events Found</p>}
-
+            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-6 px-8 py-6">
+                        {isfound ? (
+                            data.map((item, index) => (
+                            <div 
+                                key={index} 
+                                className="w-full sm:w-[600px] md:w-[700px] lg:w-[800px]"  // Adjust width here
+                            >
+                                <Card key={index} data={item} />
+                            </div>
+                            ))
+                        ) : (
+                            <p className="text-center text-lg sm:text-xl font-bold">No Events Found</p>
+                        )}
             </div>
+
             
         </div>
     )

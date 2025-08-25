@@ -31,6 +31,8 @@ export default function EventUpload(){
 
         try{
 
+    
+
             if(!EventImage){
                 window.alert("Please upload Event Image");
                 return;
@@ -51,45 +53,48 @@ export default function EventUpload(){
             formData.append("Price", Price.toString());
 
 
-            const response = await axios.post("http://localhost:3000/api/eventUpload/upload" , formData,{
+            const response = await axios.post("http://localhost:5000/api/eventUpload/upload" , formData,{
                 withCredentials: true,
             });
 
-            if(response.data.message){
             
-            SetMessage(response.data.message);
 
-            setTimeout(()=>{
-                SetMessage('');
+    if (response.data) {
+        // Always show backend message if available
+        SetMessage(response.data.message || "No message from server");
 
-            },2000);
+        setTimeout(() => {
+            SetMessage("");
+        }, 2000);
 
-            if(response.data.success){
-               SetMessage('Event uploaded successfully');
-                SetEventName('');
-                SetEventImage(null);
-                SetEventDate('');
-                SetEventDuration('');
-                SetEventVenue('');
-                SetOrganizedBy('');
-                setStart('');
-                setEnd('');
-                SetEventType('');
-                SetTotalTickets(0);
-                SetPrice(0);
-            }
-
+        
+            // Reset form only if upload was successful
+            SetEventName("");
+            SetEventImage(null);
+            SetEventDate("");
+            SetEventDuration("");
+            SetEventVenue("");
+            SetOrganizedBy("");
+            setStart("");
+            setEnd("");
+            SetEventType("");
+            SetTotalTickets(0);
+            SetPrice(0);
         }
-      
+    
+} catch (er:any) {
+    console.error(er);
 
-
+    if (er.response && er.response.data && er.response.data.message) {
+        SetMessage(er.response.data.message); // show backend error message
+    } else {
+        SetMessage("Something went wrong");
     }
 
-      catch(er){
-            console.log(er);
-            SetMessage("Something went wrong")
-
-        }
+    setTimeout(() => {
+        SetMessage("");
+    }, 2000);
+    }
 
     }
 
@@ -103,8 +108,8 @@ export default function EventUpload(){
 
                 <h1 className="text-md sm:text-xl font-semibold mb-4 text-center text-blue-700">Register your Event here</h1>
 
-           
-            <form  className="space-y-4" >
+
+            <form  className="space-y-4" onSubmit={submitForm} >
                 <div className="flex items-center justify-between mb-2 gap-4">
 
                      <div>
@@ -283,6 +288,8 @@ export default function EventUpload(){
                    
 
             </form>
+
+               {message && <p className="text-red-500 mt-3 mb-5 text-center font-bold sm:text-xl">{message}</p>}
 
              </div>
 

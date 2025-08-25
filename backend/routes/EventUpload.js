@@ -3,12 +3,21 @@ import mongoose from 'mongoose'
 import Event_data from '../Mongodb/Events_data.js';
 const UploadRouter = express.Router();
 import multer from 'multer';
+import path from "path"
+import fs from "fs";
+import { fileURLToPath } from "url";
 
+const uploadDir = path.join(process.cwd(), "uploads");
+
+// ✅ Ensure uploads folder exists
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 const storage = multer.diskStorage({
 
     destination:function(req,file,cb){
-        cb(null,"uploads");
+        cb(null,uploadDir);
     },
 
     filename:function(req,file,cb){
@@ -20,11 +29,13 @@ const storage = multer.diskStorage({
 const upload = multer({storage:storage});
 
 
-UploadRouter.post("/upload",upload.single('file'), async(req,res)=>{
+UploadRouter.post("/upload",upload.single('EventImage'), async(req,res)=>{
 
     try{
 
-        const {EventName,
+        console.log("went into function")
+
+        let {EventName,
           EventDate,
           Duration,
           Venue,
@@ -67,6 +78,8 @@ UploadRouter.post("/upload",upload.single('file'), async(req,res)=>{
 
     }
     catch(er){
+
+        console.log(er);
          
         return res.status(500).json({
             message:"Server Error",
