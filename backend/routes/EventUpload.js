@@ -27,69 +27,65 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({storage:storage});
+UploadRouter.post("/upload", upload.single("EventImage"), async (req, res) => {
+  try {
+ 
 
+    let {
+      EventName,
+      EventDate,
+      Duration,
+      Venue,
+      OrganizedBy,
+      StartTime,
+      EndTime,
+      EventType,
+      TotalTickets,
+      Price,
+    } = req.body;
 
-UploadRouter.post("/upload",upload.single('EventImage'), async(req,res)=>{
+    // Convert numbers
+    Price = parseInt(Price);
+    TotalTickets = parseInt(TotalTickets);
 
-    try{
+    // ✅ If frontend uses <input type="date" /> it sends yyyy-mm-dd
+    let formattedDate = EventDate ? new Date(EventDate) : null;
 
-        console.log("went into function")
+    const file = req.file;
 
-        let {EventName,
-          EventDate,
-          Duration,
-          Venue,
-          OrganizedBy,
-          StartTime,
-          EndTime,
-          EventType,
-          TotalTickets,
-          Price} =     req.body;
-
-          Price = parseInt(Price);
-          TotalTickets = parseInt(TotalTickets);
-
-
-        const file=req.file;
-
-        if(!file){
-            return res.json({message:"Image is Required"});
-        }
-
-        const newEntry =  new Event_data({
-            EventName:EventName,
-            EventImage:file.filename,
-            EventDate:EventDate,
-            Duration:Duration,
-            Venue:Venue,
-            OrganizedBy:OrganizedBy,
-            StartTime:StartTime,
-            EndTime:EndTime,
-            EventType:EventType,
-            TotalTickets:TotalTickets,
-            Price:Price,
-           
-        })
-        await newEntry.save();
-
-        return res.status(200).json({
-            message:"Event Added Successfully"
-        })
-
+    if (!file) {
+      return res.status(400).json({ message: "Image is Required" });
     }
-    catch(er){
 
-        console.log(er);
-         
-        return res.status(500).json({
-            message:"Server Error",
-            error:er
-            
-        })
-    }
-})
+    const newEntry = new Event_data({
+      EventName,
+      EventImage: file.filename,
+      EventDate: formattedDate, // now proper Date
+      Duration,
+      Venue,
+      OrganizedBy,
+      StartTime,
+      EndTime,
+      EventType,
+      TotalTickets,
+      Price,
+    });
 
+    await newEntry.save();
 
+    return res.status(200).json({
+      message: "Event Added Successfully",
+      event: newEntry,
+    });
+  } catch (er) {
+    console.error(er);
+
+    return res.status(500).json({
+      message: "Server Error",
+      error: er.message,
+    });
+  }
+});
 
 
 

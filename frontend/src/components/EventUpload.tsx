@@ -43,11 +43,11 @@ export default function EventUpload(){
             formData.append("EventName", EventName);
             formData.append("EventImage", EventImage);
             formData.append("EventDate", EventDate);
-            formData.append("EventDuration", EventDuration);
-            formData.append("EventVenue", EventVenue);
+            formData.append("Duration", EventDuration);
+            formData.append("Venue", EventVenue);
             formData.append("OrganizedBy", OrganizedBy);
-            formData.append("Start", Start);
-            formData.append("End", End);
+            formData.append("StartTime", Start);
+            formData.append("EndTime", End);
             formData.append("EventType", EventType);
             formData.append("TotalTickets", TotalTickets.toString());
             formData.append("Price", Price.toString());
@@ -57,7 +57,7 @@ export default function EventUpload(){
                 withCredentials: true,
             });
 
-            
+            console.log(response);
 
     if (response.data) {
         // Always show backend message if available

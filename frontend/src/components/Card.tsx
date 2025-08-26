@@ -3,6 +3,7 @@ import { useState } from "react";
 export default function Card({ data }: any) {
   const [expanded, setExpanded] = useState(false);
   const image = data ? data.EventImage : "default.jpg";
+  console.log(data.StartTime)
 
   const imageUrl = `http://localhost:5000/uploads/${image}`;
 

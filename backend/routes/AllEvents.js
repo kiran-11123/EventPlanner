@@ -27,6 +27,7 @@ AllEvents_Router.get("/allEvents", Authentication_token,async ( req,res)=>{
             
             
         }
+      
 
 
         return res.status(200).json({
@@ -60,6 +61,7 @@ AllEvents_Router.get("/type",Authentication_token , async(req,res)=>{
         filter.EventType = requested_type;
 
         const getData = await Event_data.find(filter);
+        
 
         if(getData.length===0){
             return res.json(400).json({
