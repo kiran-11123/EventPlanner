@@ -102,7 +102,9 @@ export default function HomePage(){
                     data.map((item, index) => (
                     <div
                         key={index}
-                        className="w-full sm:w-[500px]" // Always expand to given width
+                        className="w-full sm:w-[400px] transition-all duration-300 ease-in-out hover:outline 
+                     hover:outline-2 hover:outline-blue-300
+                        hover:border hover:border-blue-400  items-center hover:shadow-xl hover:shadow-gray-300/50   rounded-2xl" // Always expand to given width
                     >
                         <Card key={index} data={item} />
                     </div>

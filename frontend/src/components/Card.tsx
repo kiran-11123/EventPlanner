@@ -6,9 +6,9 @@ export default function Card({ data }: any) {
   const imageUrl = `http://localhost:5000/uploads/${image}`;
 
   return (
-    <div className="relative flex flex-col gap-4 items-center bg-white shadow-xl rounded-xl p-6 w-full max-w-sm sm:max-w-md">
+    <div className="relative flex flex-col gap-4 items-center bg-white shadow-xl rounded-xl p-6 w-full max-w-sm sm:max-w-md hover:outline-1">
       {/* Image */}
-      <div className="w-full h-60 rounded-lg overflow-hidden border-2">
+      <div className="w-full h-60 rounded-lg overflow-hidden border-2 hover:-translate-y-2 transition duration-300">
         <img
          src={imageUrl}
          alt="Expanded Event"
