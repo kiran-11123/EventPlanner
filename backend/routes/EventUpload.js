@@ -48,8 +48,7 @@ UploadRouter.post("/upload", upload.single("EventImage"), async (req, res) => {
     Price = parseInt(Price);
     TotalTickets = parseInt(TotalTickets);
 
-    // ✅ If frontend uses <input type="date" /> it sends yyyy-mm-dd
-    let formattedDate = EventDate ? new Date(EventDate) : null;
+    
 
     const file = req.file;
 
@@ -60,7 +59,7 @@ UploadRouter.post("/upload", upload.single("EventImage"), async (req, res) => {
     const newEntry = new Event_data({
       EventName,
       EventImage: file.filename,
-      EventDate: formattedDate, // now proper Date
+      EventDate: EventDate, // now proper Date
       Duration,
       Venue,
       OrganizedBy,

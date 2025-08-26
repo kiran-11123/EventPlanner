@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useEffect } from "react";
 import axios from "axios";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue ,useResetRecoilState, useSetRecoilState } from "recoil";
 import { isAdmin } from "../Recoil/atoms/AuthAtom";
 import Cookies from "js-cookie";
 
@@ -14,7 +14,7 @@ export default function HomePage(){
     const[data,setData] = useState([]);
     const[isfound , setIsfound] = useState(false);
     const admin = useRecoilValue(isAdmin);
-  
+   const setIsAdmin = useSetRecoilState(isAdmin);
 
 
 
@@ -22,6 +22,7 @@ export default function HomePage(){
         Cookies.remove("token");
 
         localStorage.clear();
+        setIsAdmin(false);
         sessionStorage.clear();
         navigate("/", { replace: true });
        
@@ -80,7 +81,7 @@ export default function HomePage(){
 
      
     return(
-        <div className="flex flex-col items-center  min-h-screen bg-gray-200 ">
+        <div className="flex flex-col  items-center  min-h-screen bg-gray-200 ">
 
             <header className="flex items-center justify-between w-full bg-white shadow-2xl h-20  rounded-lg px-4 py-2 ">
 
@@ -96,21 +97,24 @@ export default function HomePage(){
                 <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" onClick={Logout}>Logout</button>
 
             </header>
-
-            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-6 px-8 py-6">
-                        {isfound ? (
-                            data.map((item, index) => (
-                            <div 
-                                key={index} 
-                                className="w-full sm:w-[600px] md:w-[700px] lg:w-[800px]"  // Adjust width here
-                            >
-                                <Card key={index} data={item} />
-                            </div>
-                            ))
-                        ) : (
-                            <p className="text-center text-lg sm:text-xl font-bold">No Events Found</p>
-                        )}
+            <div className="flex flex-row flex-wrap items-center justify-center gap-6 px-8 py-6">
+                {isfound ? (
+                    data.map((item, index) => (
+                    <div
+                        key={index}
+                        className="w-full sm:w-[500px]" // Always expand to given width
+                    >
+                        <Card key={index} data={item} />
+                    </div>
+                    ))
+                ) : (
+                    <p className="text-center text-lg sm:text-xl font-bold">
+                    No Events Found
+                    </p>
+                )}
             </div>
+
+
 
             
         </div>

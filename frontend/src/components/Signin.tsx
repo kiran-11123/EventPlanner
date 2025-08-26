@@ -32,7 +32,8 @@ export default function Signin(){
         setMessage('Login successful');
 
         if(email==='admin@gmail.com'){
-             setAdmin(true);
+              localStorage.setItem("isAdmin", "true");
+              setAdmin(true);
         }
         
     setTimeout(()=>{
