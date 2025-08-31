@@ -56,30 +56,39 @@ export default function Card({ data }: any) {
             </div>
 
             {/* Expanded Details */}
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">{data.EventName}</h2>
+            
+           
 
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-              <p className="text-lg text-black">
-                Event Date: <span className="font-semibold">{data.EventDate}</span>
+            <div className="flex  flex-col justify-between  gap-4">
+              <p className="text-lg text-gray-500 w-full flex ">
+                <span className="w-1/2 ">Event Date:</span>
+                <span className="w-1/2 font-semibold text-black text-left">{data.EventDate}</span>
               </p>
-              <p className="text-lg text-black">
-                Venue: <span className="font-semibold">{data.Venue}</span>
+              <p className="text-lg text-gray-500 w-full flex ">
+                <span className="w-1/2 ">Venue:</span>
+                <span className="w-1/2 font-semibold text-black text-left">{data.Venue}</span>
               </p>
-              <p className="text-lg text-black">
-                Start Time: <span className="font-semibold">{data.StartTime}</span>
+              <p className="text-lg text-gray-500 w-full flex ">
+                <span className="w-1/2 ">Start Time:</span>
+                <span className="w-1/2 font-semibold text-black text-left">{data.StartTime}</span>
               </p>
+
+               <p className="text-lg text-gray-500 w-full flex ">
+                <span className="w-1/2 "> Organized By:</span>
+                <span className="w-1/2 font-semibold text-black text-left">{data.OrganizedBy}</span>
+              </p>
+
+
             </div>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-4">
-              <p className="text-lg text-black">
-                Ticket Price: <span className="font-semibold">{data.Price}</span>
+              <p className="text-lg text-gray-500 ">
+                Ticket Price: <span className="font-semibold text-black">{data.Price}</span>
               </p>
               <button className="px-4 py-2 border rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition">
                 Buy Ticket
               </button>
-              <p className="text-lg text-black">
-                Organized By: <span className="font-semibold">{data.OrganizedBy}</span>
-              </p>
+             
             </div>
           </div>
         </div>

@@ -85,7 +85,7 @@ export default function HomePage(){
 
             <header className="flex items-center justify-between w-full bg-white shadow-2xl h-20  rounded-lg px-4 py-2 ">
 
-                <h1 className="text-blue-700 text-md sm:text-xl font-bold ">Welcome to Home </h1>
+                <h1 className="hidden text-blue-700 text-md sm:text-xl font-bold sm:block ">Welcome to EventNest </h1>
                 {admin && (
                     <button
                         className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
