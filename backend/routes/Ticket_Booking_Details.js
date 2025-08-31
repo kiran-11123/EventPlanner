@@ -6,6 +6,32 @@ const Ticket_Router = express.Router();
 const  now= new Date()
 
 
+Ticket_Router.get("/tickets_info" , Authentication_token , async(req,res)=>{
+
+    const query = req.query;
+    const Tickets = req.tickets;
+
+    const find_query = await Event_data.find({_id:query});
+
+    if(!find_query){
+         return res.status(404).json({
+            message:"Event Not Found"
+         })
+    }
+
+    else if(find_query.TotalTickets < Tickets ){
+         return res.status(400).json({
+            message:`only ${find_query.TotalTickets} left`
+         })
+    }
+
+    return res.status(200).json({
+        message:"Go for the Payment"
+    })
+       
+})
+
+
 Ticket_Router.post("/bookTickets" ,Authentication_token ,async(req,res)=>{
       
      try{

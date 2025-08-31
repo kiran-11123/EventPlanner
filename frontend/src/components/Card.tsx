@@ -1,9 +1,32 @@
 import { useState } from "react";
-
+import axios from "axios";
 export default function Card({ data }: any) {
   const [expanded, setExpanded] = useState(false);
   const image = data ? data.EventImage : "default.jpg";
   const imageUrl = `http://localhost:5000/uploads/${image}`;
+  const[countTickets , getCountTickets] = useState(1);
+
+
+  function IncreaseTickets(){
+      
+     getCountTickets(countTickets+1);
+  }
+
+  function DecreaseTickets(){
+       
+    if(countTickets>1){
+         getCountTickets(countTickets-1);
+    }
+  }
+
+
+  async function TicketBuy(id:String , countTickets:Number){
+
+    
+
+     
+         
+  }
 
   return (
     <div className="relative flex flex-col gap-4 items-center bg-white shadow-xl rounded-xl p-6 w-full max-w-sm sm:max-w-md hover:outline-1">
@@ -85,9 +108,18 @@ export default function Card({ data }: any) {
               <p className="text-lg text-gray-500 ">
                 Ticket Price: <span className="font-semibold text-black">{data.Price}</span>
               </p>
-              <button className="px-4 py-2 border rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition">
-                Buy Ticket
+             
+              <button className="px-4 py-2 border rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition" onClick={(e)=>TicketBuy(data._id , countTickets)}>
+                Buy Ticket 
               </button>
+
+              <div className="flex  gap-2  items-center cursor-pointer "> 
+                
+                <p className="text-xl border rounded-lg px-2.5 py-1 bg-gray-300" onClick={IncreaseTickets}>+</p>
+                <p>{countTickets}</p>
+                <p className="text-xl border rounded-lg px-3 py-1 bg-gray-300" onClick={DecreaseTickets}>-</p>
+
+              </div>
              
             </div>
           </div>
