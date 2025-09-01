@@ -37,9 +37,7 @@ export default function Card({ data }: any) {
 
          if(response.status===200 && response.data.message==='Go for the Payment'){
 
-             navigate("/payment")
-                   
-                
+             navigate("/payment" , { state: { Tickets : countTickets }})
          }
          else{
             window.alert(response.data.message);
