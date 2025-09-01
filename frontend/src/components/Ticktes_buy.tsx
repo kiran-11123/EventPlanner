@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Ticktes_buy = () => {
+const Ticktes_buy = ({ Tickets }) => {
   return (
     <div className='flex flex-col px-8 py-6 items-center justify-center min-h-screen bg-gray-100'>
 
@@ -8,7 +8,7 @@ const Ticktes_buy = () => {
 
 
 
-          
+          <p className='text-lg font-semibold'>Tickets: {Tickets}</p>
 
         </div>
 
