@@ -29,6 +29,7 @@ export default function Signin(){
     console.log(response)
 
     if(response.status === 200) {
+        setAdmin(false);
         setMessage('Login successful');
 
         if(email==='admin@gmail.com'){
