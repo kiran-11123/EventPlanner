@@ -43,7 +43,6 @@ export default function HomePage(){
                 withCredentials:true
             })
 
-            console.log(response)
                             
             if (response.data.TotalData.length === 0) {
                  setIsfound(false);

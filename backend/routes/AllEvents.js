@@ -11,7 +11,6 @@ AllEvents_Router.get("/allEvents", Authentication_token,async ( req,res)=>{
 
     try{
 
-        console.log("Triggered")
 
      
 

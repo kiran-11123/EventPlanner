@@ -1,10 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 export default function Card({ data }: any) {
   const [expanded, setExpanded] = useState(false);
   const image = data ? data.EventImage : "default.jpg";
   const imageUrl = `http://localhost:5000/uploads/${image}`;
   const[countTickets , getCountTickets] = useState(1);
+  const navigate = useNavigate();
+  
 
 
   function IncreaseTickets(){
@@ -20,11 +23,35 @@ export default function Card({ data }: any) {
   }
 
 
-  async function TicketBuy(id:String , countTickets:Number){
-
-    
+  async function TicketBuy(query_id:String , countTickets:Number){
 
      
+    try{
+
+      const response = await axios.post("http://localhost:5000/api/tickets/tickets_info", {
+             query:query_id,
+             Tickets:countTickets,
+         },{
+            withCredentials: true
+         });
+
+         if(response.status===200 && response.data.message==='Go for the Payment'){
+
+             navigate("/payment")
+                   
+                
+         }
+         else{
+            window.alert(response.data.message);
+            navigate("/home")
+         }
+    }
+    catch(er){
+        
+      console.log(er);
+      window.alert("Error Occured");
+      
+    }
          
   }
 

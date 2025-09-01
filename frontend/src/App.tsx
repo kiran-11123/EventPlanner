@@ -8,6 +8,7 @@ import Signin from './components/Signin'
 import Signup from './components/Signup'
 import Card from './components/Card'
 import EventUpload from './components/EventUpload'
+import Ticktes_buy from './components/Ticktes_buy'
 function App() {
  
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/card" element={<Card />} />
         <Route path="/eventupload" element={<EventUpload />} /> 
+        <Route path="/payment" element={<Ticktes_buy />} />
        </Routes>
     </BrowserRouter>
   )

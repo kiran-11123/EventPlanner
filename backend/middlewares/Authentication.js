@@ -9,7 +9,7 @@ const secret = process.env.SECRET_KEY;
 const Authentication_token = (req,res,next)=>{
 
     const token = req.cookies?.token;
-    console.log("Token from cookie:", token);
+   
 
     if(!token){
          return res.status(401).json({

@@ -2,16 +2,25 @@ import express from 'express';
 import Authentication_token from '../middlewares/Authentication.js';
 import Event_data from '../Mongodb/Events_data.js';
 import Users_history from '../Mongodb/User_History.js';
+import mongoose from 'mongoose';
 const Ticket_Router = express.Router();
 const  now= new Date()
 
 
-Ticket_Router.get("/tickets_info" , Authentication_token , async(req,res)=>{
+Ticket_Router.post("/tickets_info" , Authentication_token , async(req,res)=>{
 
-    const query = req.query;
-    const Tickets = req.tickets;
+   
+    const {query , Tickets} = req.body;
 
-    const find_query = await Event_data.find({_id:query});
+    if(!mongoose.Types.ObjectId.isValid(query)){
+        return res.status(400).json({
+            message:"Invalid Event ID"
+        });
+    }
+
+    const event_id = new mongoose.Types.ObjectId(query);
+
+    const find_query = await Event_data.find({_id:event_id});
 
     if(!find_query){
          return res.status(404).json({
@@ -19,7 +28,9 @@ Ticket_Router.get("/tickets_info" , Authentication_token , async(req,res)=>{
          })
     }
 
-    else if(find_query.TotalTickets < Tickets ){
+    const ticket_count = parseInt(Tickets);
+
+    if(find_query.TotalTickets < ticket_count ){
          return res.status(400).json({
             message:`only ${find_query.TotalTickets} left`
          })
