@@ -42,74 +42,74 @@ Ticket_Router.post("/tickets_info" , Authentication_token , async(req,res)=>{
        
 })
 
+Ticket_Router.post("/bookTickets", async (req, res) => {
+  try {
+    console.log("Request body:", req.body);
 
-Ticket_Router.post("/bookTickets" ,Authentication_token ,async(req,res)=>{
-      
-     try{
+    const { event_id, tickets, TotalPrice } = req.body;
 
-        const user_id = req.user.userId;
-        const {event_id , event_name , Tickets_Total ,TotalAmount } = req.body;
+    if (!event_id || !tickets || !TotalPrice) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
 
+    const event = await Event_data.find({_id: event_id});
+    if (!event || event.length === 0) {
+      return res.status(404).json({ message: "Event not found" });
+    }
 
-        const find_Event = await Event_data.findOne({_id:event_id});
-        if(!find_Event){
-             
-            return res.status(400).json({
-                 message:"The Event is not present in the Event List ! Please Check Again"
-            })
-        }
+    const find_user = await Users_history.findOne({userID : req.userId});
 
-        const check_event_date = find_Event.EventDate;
+    if (!find_user) {
+  const new_user = new Users_history({
+    userID: req.userId,
+    history: [
+      {
+        EventName: event.EventName,
+        EventDate: event.EventDate,
+        Duration: event.Duration,
+        OrganizedBy: event.OrganizedBy,
+        StartTime: event.StartTime,
+        EndTime: event.EndTime,
+        Totaltickets: tickets,
+        Status: "Booked",
+        bookedAt: new Date()
+      }
+    ]
+  });
 
-        if(check_event_date < now){
-             
-            return res.status(400).json({
-                message:"The Event is completed ! Please check again"
-            })
-        }
+  await new_user.save();
+} else {
+  find_user.history.push({
+    EventName: event.EventName,
+    EventDate: event.EventDate,
+    Duration: event.Duration,
+    OrganizedBy: event.OrganizedBy,
+    StartTime: event.StartTime,
+    EndTime: event.EndTime,
+    Totaltickets: tickets,
+    Status: "Booked",
+    bookedAt: new Date()
+  });
 
-        const Tickets_Available = Number(find_Event.TotalTickets); 
+  await find_user.save();
+}
 
-        if(Tickets_Available < Tickets_Total){
-               
-            return res.status(400).json({
-                message:"There are no Sufficient Tickets ! Available ",
-                error:er
-            })
-        }
+    return res.status(200).json({
+      message: "Tickets Booked Successfully",
+      event: {
+        event_name: event.EventName,
+        event_date: event.EventDate,
+        venue: event.Venue,
+        tickets,
+        totalPrice: TotalPrice
+      }
+    });
+  } catch (error) {
+    console.error("🔥 Error in /bookTickets:", error); // more clear
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+});
 
-
-
-        const ticketPrice = find_Event.Price;
-        const baseAmount = ticketPrice * Tickets_Total;
-        const gstRate = 0.18; // 18% GST
-        const gstAmount = baseAmount * gstRate;
-        const totalAmountWithGST = baseAmount + gstAmount;
-
-        find_Event.TotalTickets = Tickets_Available - Tickets_Total;
-        await find_Event.save();
-
-        return res.status(200).json({
-            message: "Tickets Booked Successfully",
-            event: {
-                event_id: find_Event._id,
-                event_name: find_Event.EventName,
-                tickets_booked: Tickets_Total,
-                base_amount: baseAmount,
-                gst_amount: gstAmount,
-                total_amount: totalAmountWithGST
-            }
-        });
-
-     }
-     catch(er){
-         
-         return res.status(500).json({
-            message:"Internal Server Error",
-            error:er
-         })
-     }
-})
 
 
 

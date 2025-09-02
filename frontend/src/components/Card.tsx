@@ -23,6 +23,8 @@ export default function Card({ data }: any) {
   }
 
 
+
+
   async function TicketBuy(query_id:String , countTickets:Number){
 
      
@@ -37,7 +39,7 @@ export default function Card({ data }: any) {
 
          if(response.status===200 && response.data.message==='Go for the Payment'){
 
-             navigate("/payment" , { state: { Tickets : countTickets }})
+             navigate("/payment" , { state: { Tickets : countTickets , Event_id : query_id , Price:data.Price}})
          }
          else{
             window.alert(response.data.message);
