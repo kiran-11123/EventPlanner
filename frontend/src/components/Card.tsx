@@ -1,11 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { isAdmin } from "../Recoil/atoms/AuthAtom";
+import { useRecoilValue } from "recoil";
 export default function Card({ data }: any) {
   const [expanded, setExpanded] = useState(false);
   const image = data ? data.EventImage : "default.jpg";
   const imageUrl = `http://localhost:5000/uploads/${image}`;
   const[countTickets , getCountTickets] = useState(1);
+  const admin = useRecoilValue(isAdmin);
   const navigate = useNavigate();
   
 
@@ -77,12 +80,23 @@ export default function Card({ data }: any) {
       </p>
 
       {/* Expand button */}
-      <button
-        className="mt-3 px-4 py-2 rounded-lg font-bold bg-blue-600 text-white hover:bg-blue-700 transition"
-        onClick={() => setExpanded(true)}
-      >
-        View details
-      </button>
+      <div className="flex justify-between items-center gap-4">
+        <button
+          className="mt-3 px-4 py-2 rounded-lg font-bold bg-blue-600 text-white hover:bg-blue-700 transition"
+          onClick={() => setExpanded(true)}
+        >
+          View details
+        </button>
+
+        {admin && (
+          <button
+            className="mt-3 px-4 py-2 rounded-lg font-bold bg-blue-600 text-white hover:bg-blue-700 transition"
+           
+          >
+            Update
+          </button>
+        )}
+      </div>
 
       {/* Expanded Overlay */}
       {expanded && (

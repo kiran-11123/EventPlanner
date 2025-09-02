@@ -93,8 +93,10 @@ export default function HomePage(){
                              Add Event
                     </button>
                 )}
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" onClick={Logout}>Logout</button>
-
+                <div className="flex items-center gap-4 ">
+                  {!admin && (  <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" onClick={Logout}>History</button>)}
+                    <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" onClick={Logout}>Logout</button>
+                </div>
             </header>
             <div className="flex flex-row flex-wrap items-center justify-center gap-6 px-8 py-6">
                 {isfound ? (

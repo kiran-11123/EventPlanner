@@ -15,7 +15,7 @@ const User_Details = new mongoose.Schema({
            
 
           EventName:String,
-          EventDate:Date,
+          EventDate:String,
           Duration:String,
           OrganizedBy:String,
           StartTime:String,

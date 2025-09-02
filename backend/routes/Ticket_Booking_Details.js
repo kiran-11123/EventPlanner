@@ -42,26 +42,44 @@ Ticket_Router.post("/tickets_info" , Authentication_token , async(req,res)=>{
        
 })
 
-Ticket_Router.post("/bookTickets", async (req, res) => {
+Ticket_Router.post("/bookTickets",Authentication_token , async (req, res) => {
   try {
-    console.log("Request body:", req.body);
+    
 
-    const { event_id, tickets, TotalPrice } = req.body;
+    let { event_id, tickets, TotalPrice } = req.body;
+
+    if(!mongoose.Types.ObjectId.isValid(event_id)){
+        return res.status(400).json({
+            message:"Invalid Event ID"
+        });
+    }
+
+     event_id = new mongoose.Types.ObjectId(event_id);
+   
 
     if (!event_id || !tickets || !TotalPrice) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const event = await Event_data.find({_id: event_id});
-    if (!event || event.length === 0) {
+    const event = await Event_data.findById({_id: event_id});
+    if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
 
-    const find_user = await Users_history.findOne({userID : req.userId});
+    if (event.TotalTickets < tickets) {
+      return res.status(400).json({
+        message: `Only ${event[0].TotalTickets} tickets left`
+      });
+    }
+   
+    event.TotalTickets -= tickets;
+    await event.save();
+
+    const find_user = await Users_history.findOne({userId : req.user.userId});
 
     if (!find_user) {
-  const new_user = new Users_history({
-    userID: req.userId,
+    const new_user = new Users_history({
+    userId: req.user.userId,
     history: [
       {
         EventName: event.EventName,
@@ -100,8 +118,9 @@ Ticket_Router.post("/bookTickets", async (req, res) => {
         event_name: event.EventName,
         event_date: event.EventDate,
         venue: event.Venue,
-        tickets,
-        totalPrice: TotalPrice
+        tickets: tickets,
+        totalPrice: TotalPrice,
+        BookedBy: req.user.username
       }
     });
   } catch (error) {

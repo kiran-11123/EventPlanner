@@ -36,9 +36,11 @@ const Ticktes_buy = () => {
               window.alert("Tickets Booked Successfully")
 
               const eventDetails = `
+
               Event Name: ${response.data.event.event_name}
+              Booked By : ${response.data.event.BookedBy}
               Date: ${response.data.event.event_date}
-              Venue: ${response.data.event.Venue}
+              Venue: ${response.data.event.venue}
               Tickets Booked: ${response.data.event.tickets}
               Total Price: ${response.data.event.totalPrice}
               `;
@@ -50,7 +52,7 @@ const Ticktes_buy = () => {
              
               const link = document.createElement("a");
               link.href = url;
-              link.download = "EventDetails.txt"; 
+              link.download = `${response.data.event.event_name}_Booking_Details.txt`; 
               link.click();
 
               
@@ -91,22 +93,22 @@ const Ticktes_buy = () => {
 
               <div className="flex justify-between py-3">
                 <p className="font-semibold">Price</p>
-                <p>{Price}</p>
+                <p>$ {Price}</p>
               </div>
 
               <div className="flex justify-between py-3">
                 <p className="font-semibold">CGST</p>
-                <p>{cgst}</p>
+                <p>$ {cgst}</p>
               </div>
 
               <div className="flex justify-between py-3">
                 <p className="font-semibold">SGST</p>
-                <p>{sgst}</p>
+                <p>$ {sgst}</p>
               </div>
 
               <div className="flex justify-between py-3 font-bold text-green-600">
                 <p>Total Pay</p>
-                <p>{TotalPrice}</p>
+                <p>$ {TotalPrice}</p>
               </div>
 
           </div>
