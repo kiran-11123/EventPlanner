@@ -3,8 +3,8 @@ import Authentication_token from '../middlewares/Authentication.js';
 import Event_data from '../Mongodb/Events_data.js';
 import Users_history from '../Mongodb/User_History.js';
 import mongoose from 'mongoose';
+import DateConversion from '../middlewares/Date_conversion.js';
 const Ticket_Router = express.Router();
-const  now= new Date()
 
 
 Ticket_Router.post("/tickets_info" , Authentication_token , async(req,res)=>{
@@ -82,6 +82,7 @@ Ticket_Router.post("/bookTickets",Authentication_token , async (req, res) => {
     userId: req.user.userId,
     history: [
       {
+        EventId: event._id,
         EventName: event.EventName,
         EventDate: event.EventDate,
         Duration: event.Duration,
@@ -98,6 +99,7 @@ Ticket_Router.post("/bookTickets",Authentication_token , async (req, res) => {
   await new_user.save();
 } else {
   find_user.history.push({
+    EventId: event._id,
     EventName: event.EventName,
     EventDate: event.EventDate,
     Duration: event.Duration,
@@ -115,6 +117,7 @@ Ticket_Router.post("/bookTickets",Authentication_token , async (req, res) => {
     return res.status(200).json({
       message: "Tickets Booked Successfully",
       event: {
+        event_id: event._id,
         event_name: event.EventName,
         event_date: event.EventDate,
         venue: event.Venue,
@@ -139,57 +142,77 @@ Ticket_Router.post("/bookTickets",Authentication_token , async (req, res) => {
 
 
 
+Ticket_Router.post("/cancelTicket", Authentication_token, async (req, res) => {
+  try {
+    let { event_id, history_id } = req.body;
+   
 
-Ticket_Router.post("/cancelTicket" , Authentication_token , async(req,res)=>{
-       
-    try{
-
-        const {event_id} = req.body;
-
-        const history_check = await Users_history.findOne({_id:event_id});
-
-        if(!history_check){
-            return res.status(400).json({
-                message:"You have not booked any tickets to the Event! Please check"
-            })
-        }
-
-
-        const date_check = history_check.EventDate;
-
-        if(date_check < now){
-              
-            return res.status(400).json({
-                message:"You cannot cancel the tickets of the Event ! cancellation unavialable"
-            })
-        }
-
-        const number_of_tickets_booked = history_check.TotalTickets;
-        
-        const find_Event = await Event_data.findOne({_id:event_id});
-         
-        find_Event.TotalTickets  = find_Event.TotalTickets + number_of_tickets_booked ; 
-
-        find_Event.save();
-
-        history_check.status = "Cancelled";
-        history_check.save();
-
-        return res.status(200).json({
-            message:"Tickets Cancelled Successfully ! Refund Initiated"
-        })
-
-
-
+    if (
+      !mongoose.Types.ObjectId.isValid(event_id) ||
+      !mongoose.Types.ObjectId.isValid(history_id)
+    ) {
+      return res.status(400).json({
+        message: "Invalid Event ID or History ID",
+      });
     }
-    catch(er){
-         
-        return res.status(500).json({
-            message:"Internal Server Error",
-            error:er
-        })
+
+    event_id = new mongoose.Types.ObjectId(event_id);
+    history_id = new mongoose.Types.ObjectId(history_id);
+
+    // 1️⃣ Find the user with this history entry
+    const userHistory = await Users_history.findOne({
+      userId: req.user.userId,
+      "history._id": history_id,
+    });
+
+    if (!userHistory) {
+      return res.status(400).json({
+        message: "You have not booked any tickets to this Event!",
+      });
     }
-})
+
+    // 2️⃣ Get the specific history item
+    const historyItem = userHistory.history.id(history_id);
+
+    if (!historyItem) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    // 3️⃣ Check if event date is already past
+    const eventDate = DateConversion(historyItem.EventDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (eventDate < today) {
+      return res.status(400).json({
+        message: "You cannot cancel tickets for past events!",
+      });
+    }
+
+    // 4️⃣ Update Event tickets
+    const eventDoc = await Event_data.findById(event_id);
+    if (!eventDoc) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    eventDoc.TotalTickets += historyItem.Totaltickets;
+    await eventDoc.save();
+
+    // 5️⃣ Update history status
+    historyItem.Status = "Cancelled";
+    await userHistory.save();
+
+    return res.status(200).json({
+      message: "Tickets Cancelled Successfully! Refund Initiated",
+    });
+  } catch (er) {
+    console.error("🔥 Error in /cancelTicket:", er);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: er.message,
+    });
+  }
+});
 
 
 

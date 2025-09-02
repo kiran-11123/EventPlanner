@@ -13,7 +13,7 @@ const User_Details = new mongoose.Schema({
     history:[
         {
            
-
+          EventId:mongoose.Types.ObjectId,
           EventName:String,
           EventDate:String,
           Duration:String,

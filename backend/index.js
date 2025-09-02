@@ -10,6 +10,7 @@ import AllEvents_Router from "./routes/AllEvents.js"
 import rateLimit from 'express-rate-limit';
 import Ticket_Router from "./routes/Ticket_Booking_Details.js"
 import UploadRouter from "./routes/EventUpload.js"
+import History_router from "./routes/Get_History.js"
 
 
 const limiter = rateLimit({
@@ -34,6 +35,7 @@ app.use("/api/eventsData",AllEvents_Router);
 app.use("/api/eventUpload" , UploadRouter);
 app.use('/uploads', express.static('uploads'));
 app.use('/api/tickets' , Ticket_Router);
+app.use("/api/history",History_router);
 
 
 

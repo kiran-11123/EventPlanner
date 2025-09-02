@@ -29,6 +29,10 @@ export default function HomePage(){
           
 
     }
+
+    function ToHistory(){
+        navigate("/history");
+    }
    
 
     useEffect(()=>{
@@ -37,7 +41,7 @@ export default function HomePage(){
 
             try{
 
-            console.log("Fetching data from backend...");
+            
 
             const response = await axios.get("http://localhost:5000/api/eventsData/allEvents" ,{
                 withCredentials:true
@@ -94,7 +98,7 @@ export default function HomePage(){
                     </button>
                 )}
                 <div className="flex items-center gap-4 ">
-                  {!admin && (  <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" onClick={Logout}>History</button>)}
+                  {!admin && (  <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" onClick={ToHistory}>History</button>)}
                     <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" onClick={Logout}>Logout</button>
                 </div>
             </header>

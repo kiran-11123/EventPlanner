@@ -9,6 +9,7 @@ import Signup from './components/Signup'
 import Card from './components/Card'
 import EventUpload from './components/EventUpload'
 import Ticktes_buy from './components/Ticktes_buy'
+import History from './components/History'
 function App() {
  
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/card" element={<Card />} />
         <Route path="/eventupload" element={<EventUpload />} /> 
         <Route path="/payment" element={<Ticktes_buy />} />
+        <Route path="/history" element={<History />} />
        </Routes>
     </BrowserRouter>
   )
