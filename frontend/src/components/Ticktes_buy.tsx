@@ -75,17 +75,14 @@ const Ticktes_buy = () => {
     
   }
   return (
-        <div className="flex flex-col items-center py-10 bg-white px-4 mt-10">
-          <div className="w-full  max-w-md  sm:max-w-lg rounded-2xl shadow-xl bg-gray-100 p-8">
-            
-            
+                <div className="flex flex-col items-center py-10 bg-white px-4 mt-10">
+          {/* Payment Details */}
+          <div className="w-full max-w-md sm:max-w-lg rounded-2xl shadow-xl bg-gray-100 p-8">
             <h1 className="text-lg sm:text-xl font-bold text-center border-b pb-3 mb-5">
               Payment Details
             </h1>
 
-            
-            <div className="divide-y" >
-
+            <div className="divide-y">
               <div className="flex justify-between py-3">
                 <p className="font-semibold">Total Tickets</p>
                 <p>{Tickets}</p>
@@ -110,23 +107,39 @@ const Ticktes_buy = () => {
                 <p>Total Pay</p>
                 <p>$ {TotalPrice}</p>
               </div>
+            </div>
+          </div>
 
+          {/* Payment Methods */}
+          <div className="mt-10 w-full max-w-md sm:max-w-3xl bg-gray-300 shadow-lg rounded-md px-5 py-4 
+                          grid grid-cols-2 gap-4 sm:flex sm:flex-row sm:justify-evenly sm:items-center">
+            <button
+              className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+              onClick={BuyTickets}
+            >
+              PhonePe
+            </button>
+            <button
+              className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+              onClick={BuyTickets}
+            >
+              GPay
+            </button>
+            <button
+              className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+              onClick={BuyTickets}
+            >
+              Debit Card
+            </button>
+            <button
+              className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+              onClick={BuyTickets}
+            >
+              Credit Card
+            </button>
           </div>
         </div>
 
-
-        <div className='flex items-center max-w-2xl sm:flex-row justify-center sm:justify-evenly gap-4 sm:max-w-3xl mt-10 px-5 py-3 rounded-md border-1 bg-gray-300  shadow-lg cursor-pointer'>
-
-          <button className='px-2 py-2 sm:px-4 border-1 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700' onClick={BuyTickets}>PhonePe</button>
-          <button className='px-2 py-2 sm:px-4 border-1 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700' onClick={BuyTickets}>GPay</button>
-          <button className='px-2 py-2 sm:px-4 border-1 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700' onClick={BuyTickets}>Debit Card</button>
-          <button className='px-2 py-2 sm:px-4 border-1 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700' onClick={BuyTickets}>Credit Card</button>
-
-
-        </div>
-
-
-</div>
 
   )
 }

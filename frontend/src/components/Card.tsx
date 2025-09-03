@@ -91,7 +91,7 @@ export default function Card({ data }: any) {
         {admin && (
           <button
             className="mt-3 px-4 py-2 rounded-lg font-bold bg-blue-600 text-white hover:bg-blue-700 transition"
-           
+            onClick={() => navigate("/update", { state: { eventData: data } })}
           >
             Update
           </button>
