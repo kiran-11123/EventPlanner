@@ -75,43 +75,101 @@ export default function History(){
         
     
       return(
-            
-        <div className="flex flex-col min-h-screen bg-gray-100 shadow-md px-5 py-4">
-            <h1 className="text-xl font-bold text-center my-6">Booking History</h1>
 
-           {Message && <p className="text-red-500 text-center text-md sm:text-xl mt-5">{Message}</p>}
+                <div className="flex flex-col min-h-screen bg-gray-100 shadow-md px-5 py-4">
+            <div className="w-full max-w-xl sm:max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+              <h1 className="text-xl font-bold text-center my-6">Booking History</h1>
 
-           {data.length > 0 ? (
-        <table className="w-full border border-gray-300 shadow-md rounded-lg">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="border px-4 py-2">S No</th>
-              <th className="border px-4 py-2">Event Name</th>
-              <th className="border px-4 py-2">Event Date</th>
-              <th className="border px-4 py-2">Total Tickets</th>
-              <th className="border px-4 py-2">Status</th>
-              <th className="border px-4 py-2">Cancel Ticket</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item:any, index) => (
-              <tr key={index} className="hover:bg-gray-100 items-center text-center">
-                <td className="border px-4 py-2">{index + 1}</td>
-                <td className="border px-4 py-2">{item.EventName}</td>
-                <td className="border px-4 py-2">{item.EventDate}</td>
-                <td className="border px-4 py-2">{item.Totaltickets}</td>
-                <td className="border px-4 py-2">{item.Status}</td>
-               { item.Status==='Booked' && <td className="border px-4 py-2"><button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" onClick={() => handleCancelTicket(item.EventId ,item._id)}>Cancel</button></td> }
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        !Message && <p className="text-red-500 text-center text-md sm:text-xl mt-5">No history found.</p>
-      )}
-                   
-            
-     
-        </div>
+              {Message && (
+                <p className="text-red-500 text-center text-md sm:text-xl mt-5">{Message}</p>
+              )}
+
+              {data.length > 0 ? (
+                <>
+                  {/* Desktop Table */}
+                  <div className="hidden sm:block overflow-x-auto">
+                    <table className="w-full border border-gray-300 shadow-md rounded-lg">
+                      <thead className="bg-gray-200">
+                        <tr>
+                          <th className="border px-4 py-2">S No</th>
+                          <th className="border px-4 py-2">Event Name</th>
+                          <th className="border px-4 py-2">Event Date</th>
+                          <th className="border px-4 py-2">Total Tickets</th>
+                          <th className="border px-4 py-2">Status</th>
+                          <th className="border px-4 py-2">Cancel Ticket</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {data.map((item: any, index) => (
+                          <tr
+                            key={index}
+                            className="hover:bg-gray-100 items-center text-center"
+                          >
+                            <td className="border px-4 py-2">{index + 1}</td>
+                            <td className="border px-4 py-2">{item.EventName}</td>
+                            <td className="border px-4 py-2">{item.EventDate}</td>
+                            <td className="border px-4 py-2">{item.Totaltickets}</td>
+                            <td className="border px-4 py-2">{item.Status}</td>
+                            <td className="border px-4 py-2">
+                              {item.Status === "Booked" && (
+                                <button
+                                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                                  onClick={() => handleCancelTicket(item.EventId, item._id)}
+                                >
+                                  Cancel
+                                </button>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Mobile Cards */}
+                  <div className="sm:hidden space-y-4">
+                    {data.map((item: any, index) => (
+                      <div
+                        key={index}
+                        className="border rounded-lg p-4 shadow-md bg-gray-50"
+                      >
+                        <p>
+                          <span className="font-semibold">S No:</span> {index + 1}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Event:</span> {item.EventName}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Date:</span> {item.EventDate}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Tickets:</span> {item.Totaltickets}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Status:</span> {item.Status}
+                        </p>
+                        {item.Status === "Booked" && (
+                          <button
+                            className="mt-2 w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                            onClick={() => handleCancelTicket(item.EventId, item._id)}
+                          >
+                            Cancel
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                !Message && (
+                  <p className="text-red-500 text-center text-md sm:text-xl mt-5">
+                    No history found.
+                  </p>
+                )
+              )}
+            </div>
+          </div>
+
+
       )
 }

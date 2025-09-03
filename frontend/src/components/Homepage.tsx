@@ -84,46 +84,58 @@ export default function HomePage(){
 
      
     return(
-        <div className="flex flex-col  items-center  min-h-screen bg-gray-200 ">
+        <div className="flex flex-col min-h-screen bg-gray-200">
+  {/* Fixed Header */}
+  <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-2xl h-20 rounded-lg px-4 py-2 flex items-center justify-between">
+    <h1 className="hidden sm:block text-blue-700 text-md sm:text-xl font-bold">
+      Welcome to EventNest
+    </h1>
 
-            <header className="flex items-center justify-between w-full bg-white shadow-2xl h-20  rounded-lg px-4 py-2 ">
+    {admin && (
+      <button
+        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+        onClick={ToEventUpload}
+      >
+        Add Event
+      </button>
+    )}
 
-                <h1 className="hidden text-blue-700 text-md sm:text-xl font-bold sm:block ">Welcome to EventNest </h1>
-                {admin && (
-                    <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                        onClick={ToEventUpload}
-                         >
-                             Add Event
-                    </button>
-                )}
-                <div className="flex items-center gap-4 ">
-                  {!admin && (  <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" onClick={ToHistory}>History</button>)}
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600" onClick={Logout}>Logout</button>
-                </div>
-            </header>
-            <div className="flex flex-row flex-wrap items-center justify-center gap-6 px-8 py-6">
-                {isfound ? (
-                    data.map((item, index) => (
-                    <div
-                        key={index}
-                        className="w-full sm:w-[400px] transition-all duration-300 ease-in-out hover:outline 
-                     hover:outline-2 hover:outline-blue-300
-                        hover:border hover:border-blue-400  items-center hover:shadow-xl hover:shadow-gray-300/50   rounded-2xl" // Always expand to given width
-                    >
-                        <Card key={index} data={item} />
-                    </div>
-                    ))
-                ) : (
-                    <p className="text-center text-lg sm:text-xl font-bold">
-                    No Events Found
-                    </p>
-                )}
-            </div>
+    <div className="flex gap-4 items-center w-full sm:w-auto justify-between sm:justify-end">
+      {!admin && (
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          onClick={ToHistory}
+        >
+          History
+        </button>
+      )}
+      <button
+        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+        onClick={Logout}
+      >
+        Logout
+      </button>
+    </div>
+  </header>
 
-
-
-            
+  {/* Body Content */}
+  <main className="flex flex-row flex-wrap items-center justify-center gap-6 px-8 py-6 pt-20 mt-5">
+    {isfound ? (
+      data.map((item, index) => (
+        <div
+          key={index}
+          className="w-full sm:w-[400px] transition-all duration-300 ease-in-out hover:outline 
+          hover:outline-2 hover:outline-blue-300 hover:border hover:border-blue-400 
+          items-center hover:shadow-xl hover:shadow-gray-300/50 rounded-2xl"
+        >
+          <Card key={index} data={item} />
         </div>
+      ))
+    ) : (
+      <p className="text-center text-lg sm:text-xl font-bold">No Events Found</p>
+    )}
+  </main>
+</div>
+
     )
 }

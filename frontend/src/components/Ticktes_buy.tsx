@@ -76,7 +76,7 @@ const Ticktes_buy = () => {
   }
   return (
         <div className="flex flex-col items-center py-10 bg-white px-4 mt-10">
-          <div className="w-full max-w-md sm:max-w-lg rounded-2xl shadow-xl bg-gray-100 p-8">
+          <div className="w-full  max-w-md  sm:max-w-lg rounded-2xl shadow-xl bg-gray-100 p-8">
             
             
             <h1 className="text-lg sm:text-xl font-bold text-center border-b pb-3 mb-5">
@@ -84,7 +84,7 @@ const Ticktes_buy = () => {
             </h1>
 
             
-            <div className="divide-y">
+            <div className="divide-y" >
 
               <div className="flex justify-between py-3">
                 <p className="font-semibold">Total Tickets</p>
@@ -115,12 +115,12 @@ const Ticktes_buy = () => {
         </div>
 
 
-        <div className='flex items-center justify-evenly w-full mt-10 px-5 py-3 rounded-md border-1 bg-gray-300 max-w-3xl shadow-lg cursor-pointer'>
+        <div className='flex items-center max-w-2xl sm:flex-row justify-center sm:justify-evenly gap-4 sm:max-w-3xl mt-10 px-5 py-3 rounded-md border-1 bg-gray-300  shadow-lg cursor-pointer'>
 
-          <button className='px-4 py-2 border-1 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700' onClick={BuyTickets}>PhonePe</button>
-          <button className='px-4 py-2 border-1 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700' onClick={BuyTickets}>GPay</button>
-          <button className='px-4 py-2 border-1 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700' onClick={BuyTickets}>Debit Card</button>
-          <button className='px-4 py-2 border-1 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700' onClick={BuyTickets}>Credit Card</button>
+          <button className='px-2 py-2 sm:px-4 border-1 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700' onClick={BuyTickets}>PhonePe</button>
+          <button className='px-2 py-2 sm:px-4 border-1 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700' onClick={BuyTickets}>GPay</button>
+          <button className='px-2 py-2 sm:px-4 border-1 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700' onClick={BuyTickets}>Debit Card</button>
+          <button className='px-2 py-2 sm:px-4 border-1 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700' onClick={BuyTickets}>Credit Card</button>
 
 
         </div>
