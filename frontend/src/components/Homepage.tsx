@@ -84,39 +84,44 @@ export default function HomePage(){
 
      
     return(
-        <div className="flex flex-col min-h-screen bg-gray-200">
-  {/* Fixed Header */}
-  <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-2xl h-20 rounded-lg px-4 py-2 flex items-center justify-between">
-    <h1 className="hidden sm:block text-blue-700 text-md sm:text-xl font-bold">
-      Welcome to EventNest
-    </h1>
 
-    {admin && (
+      <div>
+        <header
+  className={`fixed top-0 left-0 w-full z-50 bg-white shadow-2xl h-20 rounded-lg px-4 py-2 flex items-center ${
+    admin ? "justify-between gap-6" : "justify-between"
+  }`}
+>
+  <h1 className="hidden sm:block text-blue-700 text-md sm:text-xl font-bold">
+    Welcome to EventNest
+  </h1>
+
+  {admin && (
+    <button
+      className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+      onClick={ToEventUpload}
+    >
+      Add Event
+    </button>
+  )}
+
+  <div className="flex gap-4 items-center w-full sm:w-auto justify-between sm:justify-end">
+    {!admin && (
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-        onClick={ToEventUpload}
+        onClick={ToHistory}
       >
-        Add Event
+        History
       </button>
     )}
+    <button
+      className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+      onClick={Logout}
+    >
+      Logout
+    </button>
+  </div>
+</header>
 
-    <div className="flex gap-4 items-center w-full sm:w-auto justify-between sm:justify-end">
-      {!admin && (
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-          onClick={ToHistory}
-        >
-          History
-        </button>
-      )}
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-        onClick={Logout}
-      >
-        Logout
-      </button>
-    </div>
-  </header>
 
   {/* Body Content */}
   <main className="flex flex-row flex-wrap items-center justify-center gap-6 px-8 py-6 pt-20 mt-5">

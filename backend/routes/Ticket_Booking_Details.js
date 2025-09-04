@@ -246,8 +246,38 @@ Ticket_Router.post("/cancelTicket", Authentication_token, async (req, res) => {
   }
 });
 
+Ticket_Router.post("/Tickets_Update", Authentication_token, async (req, res) => {
+  try {
+    let { Event_id, tickets } = req.body;
 
+    // Find event by ID
+    const find_event = await Event_data.findById(Event_id);
 
+    if (!find_event) {
+      return res.status(400).json({
+        message: "Event Not Found",
+      });
+    }
+
+    // Ensure tickets is a number
+    tickets = parseInt(tickets);
+
+    // Update total tickets
+    find_event.TotalTickets += tickets;
+    await find_event.save();
+
+    return res.status(200).json({
+      message: "Tickets Updated Successfully",
+    });
+  } catch (er) {
+    console.error(er);
+
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: er.message,
+    });
+  }
+});
 
 
 
