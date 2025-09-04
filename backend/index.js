@@ -11,6 +11,7 @@ import rateLimit from 'express-rate-limit';
 import Ticket_Router from "./routes/Ticket_Booking_Details.js"
 import UploadRouter from "./routes/EventUpload.js"
 import History_router from "./routes/Get_History.js"
+import bodyParser from 'body-parser';
 
 
 const limiter = rateLimit({
@@ -36,6 +37,8 @@ app.use("/api/eventUpload" , UploadRouter);
 app.use('/uploads', express.static('uploads'));
 app.use('/api/tickets' , Ticket_Router);
 app.use("/api/history",History_router);
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 
 

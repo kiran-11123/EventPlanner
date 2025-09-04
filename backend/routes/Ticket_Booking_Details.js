@@ -4,13 +4,29 @@ import Event_data from '../Mongodb/Events_data.js';
 import Users_history from '../Mongodb/User_History.js';
 import mongoose from 'mongoose';
 import DateConversion from '../middlewares/Date_conversion.js';
+import bodyParser from 'body-parser';
+import nodemailer from 'nodemailer';
 const Ticket_Router = express.Router();
+let email = null; // Replace with actual email if needed
+
+
+let transporter = nodemailer.createTransport({
+  host: email ? "smtp.gmail.com" : "smtp.ethereal.email",
+  port: 465,
+  secure: true,
+  auth: {
+    user: email ? "myrealemail@gmail.com" : "your_ethereal_email@ethereal.email",
+    pass: email ? "abcd efgh ijkl mnop" : "your_ethereal_password",
+  },
+});
+
 
 
 Ticket_Router.post("/tickets_info" , Authentication_token , async(req,res)=>{
 
    
     const {query , Tickets} = req.body;
+   
 
     if(!mongoose.Types.ObjectId.isValid(query)){
         return res.status(400).json({
@@ -47,6 +63,7 @@ Ticket_Router.post("/bookTickets",Authentication_token , async (req, res) => {
     
 
     let { event_id, tickets, TotalPrice } = req.body;
+    email  =req.user.email;
 
     if(!mongoose.Types.ObjectId.isValid(event_id)){
         return res.status(400).json({
@@ -113,6 +130,21 @@ Ticket_Router.post("/bookTickets",Authentication_token , async (req, res) => {
 
   await find_user.save();
 }
+
+  let mailOptions = {
+    from: "Event@gmail.com",
+    to: email,
+    subject: "Hello from Node.js",
+    text: "This is a test email sent from Node.js using Nodemailer!",
+    html: "<b>This is a test email sent from Node.js using Nodemailer!</b>",
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+  if (error) {
+    return console.log("❌ Error: " + error);
+  }
+  console.log("✅ Email sent: " + info.response);
+});
 
     return res.status(200).json({
       message: "Tickets Booked Successfully",
