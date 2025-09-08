@@ -33,7 +33,7 @@ const Ticktes_buy = () => {
 
       if(response.status===200 && response.data.message=== "Tickets Booked Successfully"){
            
-              window.alert("Tickets Booked Successfully")
+              window.alert("Tickets Booked Successfully , details sent to your mail");
 
              /* const eventDetails = `
 

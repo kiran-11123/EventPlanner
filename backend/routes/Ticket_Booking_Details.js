@@ -56,7 +56,7 @@ Ticket_Router.post("/tickets_info" , Authentication_token , async(req,res)=>{
        
 })
 
-import QRCode from "qrcode";
+
 
 // Helper to generate QR as Promise
 const generateQRCode = (data) => {
@@ -124,23 +124,53 @@ Ticket_Router.post("/bookTickets", Authentication_token, async (req, res) => {
 
     // Prepare email
     let mailOptions = {
-      from: "eventnest.offical.main@gmail.com",
+      from: "eventnest.official.main@gmail.com",
       to: email,
       subject: `🎟️ Ticket Confirmation for the show ${event.EventName}`,
       text: "Your ticket is booked successfully!",
       html: `
-        <div style="font-family: Arial, sans-serif; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
-          <h1 style="color: green;">Your ticket is booked successfully! ✅</h1>
-          <p><strong>Event Name:</strong> ${event.EventName}</p>
-          <p><strong>Event Date:</strong> ${event.EventDate}</p>
-          <p><strong>Venue:</strong> ${event.Venue}</p>
-          <p><strong>Number of Tickets:</strong> ${tickets}</p>
-          <p><strong>Total Price:</strong> $${TotalPrice}</p>
-          <p><strong>Booked By:</strong> ${req.user.username}</p>
-          <p><b>Unique Ticket ID:</b> ${randomData}</p>
-          <br/>
-          <img src="cid:ticketqr" alt="QR Code" style="width:150px; height:150px;" />
-        </div>
+        <div style="font-family: Arial, sans-serif; padding: 20px; border: 2px solid #4CAF50; border-radius: 10px; max-width: 600px; margin: auto; background-color: #f9f9f9;">
+          <h1 style="color: #4CAF50; text-align: center;">🎫 Ticket Confirmation</h1>
+          <p style="text-align: center; font-size: 16px; color: #555;">Your ticket has been booked successfully! ✅</p>
+
+          <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <tr>
+              <td style="padding: 10px; font-weight: bold; background-color: #e8f5e9;">Event Name:</td>
+              <td style="padding: 10px; background-color: #ffffff;">${event.EventName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: bold; background-color: #e8f5e9;">Event Date:</td>
+              <td style="padding: 10px; background-color: #ffffff;">${event.EventDate}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: bold; background-color: #e8f5e9;">Venue:</td>
+              <td style="padding: 10px; background-color: #ffffff;">${event.Venue}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: bold; background-color: #e8f5e9;">Number of Tickets:</td>
+              <td style="padding: 10px; background-color: #ffffff;">${tickets}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: bold; background-color: #e8f5e9;">Total Price:</td>
+              <td style="padding: 10px; background-color: #ffffff;">$${TotalPrice}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: bold; background-color: #e8f5e9;">Booked By:</td>
+              <td style="padding: 10px; background-color: #ffffff;">${req.user.username}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: bold; background-color: #e8f5e9;">Unique Ticket ID:</td>
+              <td style="padding: 10px; background-color: #ffffff;">${randomData}</td>
+            </tr>
+          </table>
+
+          <div style="text-align: center; margin-top: 20px;">
+            <img src="cid:ticketqr" alt="QR Code" style="width:180px; height:180px; border: 2px solid #4CAF50; border-radius: 10px;" />
+          </div>
+
+          <p style="text-align: center; color: #555; margin-top: 20px;">Thank you for booking with EventNest! We look forward to seeing you at the event.</p>
+      </div>
+
       `,
       attachments: [
         {

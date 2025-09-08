@@ -11,6 +11,7 @@ import EventUpload from './components/EventUpload'
 import Ticktes_buy from './components/Ticktes_buy'
 import History from './components/History'
 import Update from './components/Update'
+import OTP from './components/OTP'
 function App() {
  
 
@@ -27,6 +28,7 @@ function App() {
         <Route path="/payment" element={<Ticktes_buy />} />
         <Route path="/history" element={<History />} />
         <Route path="/update" element={<Update />} />
+     
        </Routes>
     </BrowserRouter>
   )
