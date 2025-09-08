@@ -6,19 +6,17 @@ import mongoose from 'mongoose';
 import DateConversion from '../middlewares/Date_conversion.js';
 import bodyParser from 'body-parser';
 import nodemailer from 'nodemailer';
+import QRCode from "qrcode";
 const Ticket_Router = express.Router();
 let email = null; // Replace with actual email if needed
+import transporter from './Mail.js';
+
+Ticket_Router.use(bodyParser.json());
+Ticket_Router.use(bodyParser.urlencoded({ extended: true }));
 
 
-let transporter = nodemailer.createTransport({
-  host: email ? "smtp.gmail.com" : "smtp.ethereal.email",
-  port: 465,
-  secure: true,
-  auth: {
-    user: email ? "myrealemail@gmail.com" : "your_ethereal_email@ethereal.email",
-    pass: email ? "abcd efgh ijkl mnop" : "your_ethereal_password",
-  },
-});
+
+
 
 
 
@@ -58,93 +56,105 @@ Ticket_Router.post("/tickets_info" , Authentication_token , async(req,res)=>{
        
 })
 
-Ticket_Router.post("/bookTickets",Authentication_token , async (req, res) => {
+import QRCode from "qrcode";
+
+// Helper to generate QR as Promise
+const generateQRCode = (data) => {
+  return new Promise((resolve, reject) => {
+    QRCode.toDataURL(data, (err, url) => {
+      if (err) reject(err);
+      else resolve(url);
+    });
+  });
+};
+
+Ticket_Router.post("/bookTickets", Authentication_token, async (req, res) => {
   try {
-    
-
     let { event_id, tickets, TotalPrice } = req.body;
-    email  =req.user.email;
+    const email = req.user.email;
 
-    if(!mongoose.Types.ObjectId.isValid(event_id)){
-        return res.status(400).json({
-            message:"Invalid Event ID"
-        });
+    if (!mongoose.Types.ObjectId.isValid(event_id)) {
+      return res.status(400).json({ message: "Invalid Event ID" });
     }
 
-     event_id = new mongoose.Types.ObjectId(event_id);
-   
-
-    if (!event_id || !tickets || !TotalPrice) {
-      return res.status(400).json({ message: "Missing required fields" });
-    }
-
-    const event = await Event_data.findById({_id: event_id});
+    const event = await Event_data.findById(event_id);
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
 
     if (event.TotalTickets < tickets) {
-      return res.status(400).json({
-        message: `Only ${event[0].TotalTickets} tickets left`
-      });
+      return res
+        .status(400)
+        .json({ message: `Only ${event.TotalTickets} tickets left` });
     }
-   
+
+    // Deduct tickets
     event.TotalTickets -= tickets;
     await event.save();
 
-    const find_user = await Users_history.findOne({userId : req.user.userId});
+    // Save user booking history
+    const find_user = await Users_history.findOne({ userId: req.user.userId });
+    const bookingData = {
+      EventId: event._id,
+      EventName: event.EventName,
+      EventDate: event.EventDate,
+      Duration: event.Duration,
+      OrganizedBy: event.OrganizedBy,
+      StartTime: event.StartTime,
+      EndTime: event.EndTime,
+      Totaltickets: tickets,
+      Status: "Booked",
+      bookedAt: new Date(),
+    };
 
     if (!find_user) {
-    const new_user = new Users_history({
-    userId: req.user.userId,
-    history: [
-      {
-        EventId: event._id,
-        EventName: event.EventName,
-        EventDate: event.EventDate,
-        Duration: event.Duration,
-        OrganizedBy: event.OrganizedBy,
-        StartTime: event.StartTime,
-        EndTime: event.EndTime,
-        Totaltickets: tickets,
-        Status: "Booked",
-        bookedAt: new Date()
-      }
-    ]
-  });
+      await new Users_history({
+        userId: req.user.userId,
+        history: [bookingData],
+      }).save();
+    } else {
+      find_user.history.push(bookingData);
+      await find_user.save();
+    }
 
-  await new_user.save();
-} else {
-  find_user.history.push({
-    EventId: event._id,
-    EventName: event.EventName,
-    EventDate: event.EventDate,
-    Duration: event.Duration,
-    OrganizedBy: event.OrganizedBy,
-    StartTime: event.StartTime,
-    EndTime: event.EndTime,
-    Totaltickets: tickets,
-    Status: "Booked",
-    bookedAt: new Date()
-  });
+    // Generate QR
+    const randomData = Math.random().toString(36).substring(2, 12);
+    const qrUrl = await generateQRCode(randomData);
+    const base64Data = qrUrl.split(",")[1];
 
-  await find_user.save();
-}
+    // Prepare email
+    let mailOptions = {
+      from: "eventnest.offical.main@gmail.com",
+      to: email,
+      subject: `🎟️ Ticket Confirmation for the show ${event.EventName}`,
+      text: "Your ticket is booked successfully!",
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+          <h1 style="color: green;">Your ticket is booked successfully! ✅</h1>
+          <p><strong>Event Name:</strong> ${event.EventName}</p>
+          <p><strong>Event Date:</strong> ${event.EventDate}</p>
+          <p><strong>Venue:</strong> ${event.Venue}</p>
+          <p><strong>Number of Tickets:</strong> ${tickets}</p>
+          <p><strong>Total Price:</strong> $${TotalPrice}</p>
+          <p><strong>Booked By:</strong> ${req.user.username}</p>
+          <p><b>Unique Ticket ID:</b> ${randomData}</p>
+          <br/>
+          <img src="cid:ticketqr" alt="QR Code" style="width:150px; height:150px;" />
+        </div>
+      `,
+      attachments: [
+        {
+          filename: "ticket_qr.png",
+          content: base64Data,
+          encoding: "base64",
+          cid: "ticketqr",
+        },
+      ],
+    };
 
-  let mailOptions = {
-    from: "Event@gmail.com",
-    to: email,
-    subject: "Hello from Node.js",
-    text: "This is a test email sent from Node.js using Nodemailer!",
-    html: "<b>This is a test email sent from Node.js using Nodemailer!</b>",
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-  if (error) {
-    return console.log("❌ Error: " + error);
-  }
-  console.log("✅ Email sent: " + info.response);
-});
+    // Send email
+    await transporter.sendMail(mailOptions);
+    console.log("✅ Email sent successfully with QR Code");
 
     return res.status(200).json({
       message: "Tickets Booked Successfully",
@@ -155,22 +165,16 @@ Ticket_Router.post("/bookTickets",Authentication_token , async (req, res) => {
         venue: event.Venue,
         tickets: tickets,
         totalPrice: TotalPrice,
-        BookedBy: req.user.username
-      }
+        BookedBy: req.user.username,
+      },
     });
   } catch (error) {
-    console.error("🔥 Error in /bookTickets:", error); // more clear
-    res.status(500).json({ message: "Internal Server Error", error: error.message });
+    console.error("🔥 Error in /bookTickets:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
   }
 });
-
-
-
-
-
-
-
-
 
 
 

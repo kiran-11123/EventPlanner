@@ -108,8 +108,10 @@ export default function Signup(){
                     </div>
 
 
+
+
                     <button className="text-center font-bold text-lg sm:xl  w-full rounded-lg bg-blue-500 text-white mb-5 px-3 py-2">
-                        Login
+                        Register
                     </button>
                      
                 </form>

@@ -35,7 +35,7 @@ const Ticktes_buy = () => {
            
               window.alert("Tickets Booked Successfully")
 
-              const eventDetails = `
+             /* const eventDetails = `
 
               Event Name: ${response.data.event.event_name}
               Booked By : ${response.data.event.BookedBy}
@@ -55,8 +55,8 @@ const Ticktes_buy = () => {
               link.download = `${response.data.event.event_name}_Booking_Details.txt`; 
               link.click();
 
-              
               URL.revokeObjectURL(url);
+              */
 
              setTimeout(() => navigate("/home"), 500);
 
