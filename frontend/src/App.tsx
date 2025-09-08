@@ -28,7 +28,7 @@ function App() {
         <Route path="/payment" element={<Ticktes_buy />} />
         <Route path="/history" element={<History />} />
         <Route path="/update" element={<Update />} />
-     
+        
        </Routes>
     </BrowserRouter>
   )

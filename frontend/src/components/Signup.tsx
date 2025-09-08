@@ -11,6 +11,8 @@ export default function Signup(){
     const[email,setEmail] = useState('');
     const[username,setUsername] = useState('');
     const[Password,setPassword] = useState('');
+
+
   
 
     async function submitForm(e:any) {
@@ -29,6 +31,7 @@ export default function Signup(){
 
     if(response.status === 200) {
         setMessage('User Registered  successful');
+        
         
     setTimeout(()=>{
         setMessage('')
@@ -71,9 +74,11 @@ export default function Signup(){
 
 
 
-
-
     return(
+
+    
+
+
         <div className="flex flex-col items-center py-30 bg-white px-4  mt-10">
 
             <div className="w-full max-w-md sm:max-w-lg rounded shadow-2xl bg-white px-8 ">
