@@ -5,7 +5,9 @@ const UploadRouter = express.Router();
 import multer from 'multer';
 import path from "path"
 import fs from "fs";
+import Authentication_token from '../middlewares/Authentication.js';
 import { fileURLToPath } from "url";
+import { error } from 'console';
 
 const uploadDir = path.join(process.cwd(), "uploads");
 
@@ -86,6 +88,30 @@ UploadRouter.post("/upload", upload.single("EventImage"), async (req, res) => {
   }
 });
 
+
+UploadRouter.post("/likes" ,Authentication_token , async(req,res)=>{
+        
+    try{
+
+      const likes  =req.likes;
+      const id = req.id;
+
+      const event_data = await Event_data.findOne({_id:id});
+
+      if(likes===true){
+           
+         
+      }
+
+    }
+    catch(er){
+         
+      return res.status(500).json({
+        message:"Internal server Error",
+        error:er
+      })
+    }
+})
 
 
 
