@@ -184,7 +184,6 @@ Ticket_Router.post("/bookTickets", Authentication_token, async (req, res) => {
 
     // Send email
     await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent successfully with QR Code");
 
     return res.status(200).json({
       message: "Tickets Booked Successfully",
@@ -211,6 +210,8 @@ Ticket_Router.post("/bookTickets", Authentication_token, async (req, res) => {
 Ticket_Router.post("/cancelTicket", Authentication_token, async (req, res) => {
   try {
     let { event_id, history_id } = req.body;
+
+     const email = req.user.email;
    
 
     if (
@@ -255,6 +256,8 @@ Ticket_Router.post("/cancelTicket", Authentication_token, async (req, res) => {
       });
     }
 
+    const event = await Event_data.findById(event_id);
+
     // 4️⃣ Update Event tickets
     const eventDoc = await Event_data.findById(event_id);
     if (!eventDoc) {
@@ -267,6 +270,42 @@ Ticket_Router.post("/cancelTicket", Authentication_token, async (req, res) => {
     // 5️⃣ Update history status
     historyItem.Status = "Cancelled";
     await userHistory.save();
+
+     let mailOptions = {
+      from: "eventnest.official.main@gmail.com",
+      to: email,
+      subject: `🎟️ Ticket Cancellation for the show ${historyItem.EventName}`,
+      text: "Your ticket is booked successfully!",
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px; border: 2px solid #4CAF50; border-radius: 10px; max-width: 600px; margin: auto; background-color: #f9f9f9;">
+          <h1 style="color: #4CAF50; text-align: center;">🎫 Ticket Cancellation</h1>
+          <p style="text-align: center; font-size: 16px; color: #555;">Your ticket has been cancelled successfully! ✅</p>
+
+          <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <tr>
+              <td style="padding: 10px; font-weight: bold; background-color: #e8f5e9;">Event Name:</td>
+              <td style="padding: 10px; background-color: #ffffff;">${historyItem.EventName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: bold; background-color: #e8f5e9;">Event Date:</td>
+              <td style="padding: 10px; background-color: #ffffff;">${historyItem.EventDate}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: bold; background-color: #e8f5e9;">Number of Tickets:</td>
+              <td style="padding: 10px; background-color: #ffffff;">${historyItem.Totaltickets}</td>
+            </tr>
+    
+          </table>
+
+          
+
+          <p style="text-align: center; color: #555; margin-top: 20px;">Your Tickets Cancelled Successfully ! Refund Initiated </p>
+      </div>
+
+      `,
+      attachments: [],
+    };
+    await transporter.sendMail(mailOptions);
 
     return res.status(200).json({
       message: "Tickets Cancelled Successfully! Refund Initiated",
