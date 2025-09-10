@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { isAdmin } from "../Recoil/atoms/AuthAtom";
 import { useRecoilValue } from "recoil";
+import { MdThumbUp, MdThumbUpOffAlt } from 'react-icons/md';
 export default function Card({ data }: any) {
   const [expanded, setExpanded] = useState(false);
   const image = data ? data.EventImage : "default.jpg";
@@ -10,6 +11,32 @@ export default function Card({ data }: any) {
   const[countTickets , getCountTickets] = useState(1);
   const admin = useRecoilValue(isAdmin);
   const navigate = useNavigate();
+  const[liked , setLiked] = useState(false);
+
+
+
+  function userLikes(id:any){
+  useEffect(()=>{
+
+
+    async function ButtonLike() {
+
+       const response = await axios.post("http://localhost:5000/api/eventUpload/likes" , {id,liked} ,{
+                withCredentials: true,
+            });
+
+      
+    }
+
+    ButtonLike();
+
+    
+
+  },[])
+
+
+}
+
   
 
 
@@ -81,8 +108,10 @@ export default function Card({ data }: any) {
 
       {/* Expand button */}
       <div className="flex justify-between items-center gap-4">
+
+        <button className="cursor-pointer text-2xl" onClick={()=>userLikes({id: data._id })}> {liked ? <MdThumbUp /> : <MdThumbUpOffAlt />}</button>
         <button
-          className="mt-3 px-4 py-2 rounded-lg font-bold bg-blue-600 text-white hover:bg-blue-700 transition"
+          className={` px-4 py-2 rounded-lg font-bold bg-blue-600 text-white hover:bg-blue-700 transition mt-1`}
           onClick={() => setExpanded(true)}
         >
           View details

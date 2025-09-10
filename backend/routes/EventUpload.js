@@ -98,10 +98,26 @@ UploadRouter.post("/likes" ,Authentication_token , async(req,res)=>{
 
       const event_data = await Event_data.findOne({_id:id});
 
+      if(!event_data) return res.status(404).json({
+        message:"Event Not found"
+      })
+
       if(likes===true){
+
+         event_data.likes = event_data.likes +1;
+        event_data.save();
            
          
       }
+
+      else{
+         event_data.likes = event_data.likes -1;
+        event_data.save();
+      }
+
+      return res.status(200).json({
+        message:"done"
+      })
 
     }
     catch(er){
