@@ -10,47 +10,46 @@ export default function History(){
 
     
 
-    useEffect(()=>{
+   useEffect(() => {
+  async function get_history() {
+    try {
+      const response = await axios.get("http://localhost:5000/api/history/getAll_history", {
+        withCredentials: true,
+      });
+      console.log(response);
 
-        async function get_history() {
-
-            try{
-
-                const response = await axios.get("http://localhost:5000/api/history/getAll_history",{
-                    withCredentials:true,
-                })
-                console.log(response)
-
-                if(response.status===200 && response.data.message ==='Data Fetched Successfully'){
-
-                    console.log(response.data.history);
-                    setData(response.data.history); 
-                     
-                }
-                else{
-                    setMessage("Failed to fetch the User History")
-                }
-
-            }
-            catch(er){
-                if (typeof er === "object" && er !== null && "response" in er) {
-                    const error = er as any;
-                if (error.response && error.response.data && error.response.data.message) {
-                        console.error('Error fetching data:', error.response.data.message); 
-                }
-                 else {
-                    console.error('An error occurred while fetching data:', er);
-                    }
-                } else {
-                    console.error('An unexpected error occurred:', er);
-                }
-            }
-            
+      if (response.status === 200 && response.data.message === 'Data Fetched Successfully') {
+        console.log(response.data.history);
+        setData(response.data.history);
+      } else {
+        setMessage("Failed to fetch the User History");
+      }
+    } catch (er) {
+      if (typeof er === "object" && er !== null && "response" in er) {
+        const error = er as any;
+        if (error.response && error.response.data && error.response.data.message) {
+          console.error('Error fetching data:', error.response.data.message);
+        } else {
+          console.error('An error occurred while fetching data:', er);
         }
+      } else {
+        console.error('An unexpected error occurred:', er);
+      }
+    }
+  }
 
-        get_history();
+  // Call immediately once
+  get_history();
 
-    },[])
+  // Set interval to call every 1 second
+  const intervalId = setInterval(() => {
+    get_history();
+  }, 1000);
+
+  // Cleanup interval on unmount
+  return () => clearInterval(intervalId);
+
+}, []); // empty dependency array so effect runs once on mount
 
 
     async function handleCancelTicket(EventId: String , history_id: String) {
