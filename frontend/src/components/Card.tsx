@@ -86,7 +86,7 @@ export default function Card({ data }: any) {
       <div className="flex justify-between items-center gap-4">
 
         <button
-          className={` px-4 py-2 rounded-lg font-bold bg-blue-600 text-white hover:bg-blue-700 transition mt-1`}
+          className={` px-4 py-2 rounded-lg font-mono bg-blue-600 text-white hover:bg-blue-700 transition mt-1 `}
           onClick={() => setExpanded(true)}
         >
           View details
@@ -140,7 +140,7 @@ export default function Card({ data }: any) {
 
               </div>
 
-              <div className=" mt-1 font-mono">
+              <div className=" mt-1 font-mono text-md">
 
                 <div className="w-full border rounded-lg shadow bg-white">
                   <div className="divide-y">
