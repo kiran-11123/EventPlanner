@@ -8,83 +8,79 @@ export default function Card({ data }: any) {
   const [expanded, setExpanded] = useState(false);
   const image = data ? data.EventImage : "default.jpg";
   const imageUrl = `http://localhost:5000/uploads/${image}`;
-  const[countTickets , getCountTickets] = useState(1);
+  const [countTickets, getCountTickets] = useState(1);
   const admin = useRecoilValue(isAdmin);
   const navigate = useNavigate();
 
 
 
 
-  
 
 
-  function IncreaseTickets(){
-      
-     getCountTickets(countTickets+1);
+
+  function IncreaseTickets() {
+
+    getCountTickets(countTickets + 1);
   }
 
-  function DecreaseTickets(){
-       
-    if(countTickets>1){
-         getCountTickets(countTickets-1);
+  function DecreaseTickets() {
+
+    if (countTickets > 1) {
+      getCountTickets(countTickets - 1);
     }
   }
 
 
 
 
-  async function TicketBuy(query_id:String , countTickets:Number){
+  async function TicketBuy(query_id: String, countTickets: Number) {
 
-     
-    try{
+
+    try {
 
 
 
       const response = await axios.post("http://localhost:5000/api/tickets/tickets_info", {
-             query:query_id,
-             Tickets:countTickets,
-         },{
-            withCredentials: true
-         });
+        query: query_id,
+        Tickets: countTickets,
+      }, {
+        withCredentials: true
+      });
 
-         if(response.status===200 && response.data.message==='Go for the Payment'){
+      if (response.status === 200 && response.data.message === 'Go for the Payment') {
 
-             navigate("/payment" , { state: { Tickets : countTickets , Event_id : query_id , Price:data.Price}})
-         }
-         else{
-            window.alert(response.data.message);
-            navigate("/home")
-         }
+        navigate("/payment", { state: { Tickets: countTickets, Event_id: query_id, Price: data.Price } })
+      }
+      else {
+        window.alert(response.data.message);
+        navigate("/home")
+      }
     }
-    catch(er){
-        
+    catch (er) {
+
       console.log(er);
       window.alert("Error Occured");
-      
+
     }
-         
+
   }
 
   return (
     <div className="relative flex flex-col gap-4 items-center bg-white shadow-xl rounded-xl p-6 w-full max-w-sm sm:max-w-md hover:outline-1">
       {/* Image */}
-      <div className="w-full h-60 rounded-lg overflow-hidden border-2 hover:-translate-y-2 transition duration-300">
+      <div className="w-full h-60 rounded-lg overflow-hidden border-2 ">
         <img
-         src={imageUrl}
-         alt="Expanded Event"
-         className="w-full h-full object-cover"
+          src={imageUrl}
+          alt="Expanded Event"
+          className="w-full h-full object-cover"
         />
       </div>
 
       {/* Title */}
-      <h2 className="text-lg sm:text-xl font-bold text-gray-800 mt-2">
+      <h2 className="text-sm sm:text-md font-bold text-gray-700 mt-2 font-mono">
         {data.EventName}
       </h2>
 
-      {/* Description */}
-      <p className="text-gray-600 text-base text-center">
-        {data.EventDescription}
-      </p>
 
       {/* Expand button */}
       <div className="flex justify-between items-center gap-4">
@@ -98,7 +94,7 @@ export default function Card({ data }: any) {
 
         {admin && (
           <button
-            className="mt-3 px-4 py-2 rounded-lg font-bold bg-blue-600 text-white hover:bg-blue-700 transition"
+            className="mt-1 px-4 py-2 rounded-lg font-bold bg-blue-600 text-white hover:bg-blue-700 transition"
             onClick={() => navigate("/update", { state: { eventData: data } })}
           >
             Update
@@ -112,65 +108,113 @@ export default function Card({ data }: any) {
           <div className="relative bg-white p-6 rounded-xl shadow-2xl w-full max-w-3xl">
             {/* Close button */}
             <button
-              className="absolute top-4 right-4 text-xl bg-red-600 text-white rounded-lg px-3 py-1 hover:bg-red-700 transition"
+              className="absolute top-4 right-4 text-sm bg-red-500 text-white rounded-full px-3 py-2 hover:bg-red-700 transition"
               onClick={() => setExpanded(false)}
             >
               ✕
             </button>
 
             {/* Expanded Image */}
-            <div className="w-full h-96 rounded-lg overflow-hidden border-2 mb-4">
-              <img
-                src={imageUrl}
-                alt="Expanded Event"
-                className="w-full h-full object-contain"
-              />
+            <div className="w-full flex-col h-120 rounded-lg overflow-hidden border-2 mb-4 items-start px-2 shadow-lg py-2">
+
+
+              <div className="flex  flex-row  flex-1 h-32  p-4  justify-start items-center  gap-4 font-serif text-lg">
+
+                <div className="w-32  h-32 rounded-full overflow-hidden border-2">
+                  <img
+                    src={imageUrl}
+                    alt="Expanded Event"
+                    className="w-32 h-32 rounded-full border-4 border-green-500 object-cover"
+                  />
+
+                </div>
+
+                <div className="flex  flex-col  flex-1 h-32  p-4  items-start  gap-2 ">
+
+                  <p className="text-sm text-gray-500 w-full flex ">
+                    <span className="w-1/2 ">Event Description:</span>
+                    <span className="w-1/2 font-semibold text-black text-left">{data.EventDescription}</span>
+                  </p>
+
+                </div>
+
+              </div>
+
+              <div className=" mt-1 font-mono">
+
+                <div className="w-full border rounded-lg shadow bg-white">
+                  <div className="divide-y">
+                    <div className="grid grid-cols-[30%_1fr] gap-4 p-3">
+                      <div className="font-semibold text-gray-700">Event Date</div>
+                      <div className="text-gray-600">{data.EventDate}</div>
+                    </div>
+
+                    <div className="grid grid-cols-[30%_1fr] gap-4 p-3">
+                      <div className="font-semibold text-gray-700">Venue</div>
+                      <div className="text-gray-600">{data.Venue}</div>
+                    </div>
+
+                    <div className="grid grid-cols-[30%_1fr] gap-4 p-3">
+                      <div className="font-semibold text-gray-700">Start Time</div>
+                      <div className="text-gray-600">{data.StartTime}</div>
+                    </div>
+
+                    <div className="grid grid-cols-[30%_1fr] gap-4 p-3">
+                      <div className="font-semibold text-gray-700">Organized by</div>
+                      <div className="text-gray-600">{data.OrganizedBy}</div>
+                    </div>
+
+                    <div className="grid grid-cols-[30%_1fr] gap-4 p-3">
+                      <div className="font-semibold text-gray-700">Price</div>
+                      <div className="text-gray-600">{data.Price}</div>
+                    </div>
+
+
+                  </div>
+                </div>
+
+
+
+              </div>
+
+
             </div>
 
             {/* Expanded Details */}
-            
-           
-
-            <div className="flex  flex-col justify-between  gap-4">
-              <p className="text-lg text-gray-500 w-full flex ">
-                <span className="w-1/2 ">Event Date:</span>
-                <span className="w-1/2 font-semibold text-black text-left">{data.EventDate}</span>
-              </p>
-              <p className="text-lg text-gray-500 w-full flex ">
-                <span className="w-1/2 ">Venue:</span>
-                <span className="w-1/2 font-semibold text-black text-left">{data.Venue}</span>
-              </p>
-              <p className="text-lg text-gray-500 w-full flex ">
-                <span className="w-1/2 ">Start Time:</span>
-                <span className="w-1/2 font-semibold text-black text-left">{data.StartTime}</span>
-              </p>
-
-               <p className="text-lg text-gray-500 w-full flex ">
-                <span className="w-1/2 "> Organized By:</span>
-                <span className="w-1/2 font-semibold text-black text-left">{data.OrganizedBy}</span>
-              </p>
 
 
-            </div>
 
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-4">
-              <p className="text-lg text-gray-500 ">
-                Ticket Price: <span className="font-semibold text-black">{data.Price}</span>
-              </p>
-             
-              <button className="px-4 py-2 border rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition" onClick={(e)=>TicketBuy(data._id , countTickets)}>
-                Buy Ticket 
+
+
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-6 mt-6 bg-white shadow-md border rounded-xl p-4">
+              {/* Buy Button */}
+              <button
+                className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold shadow hover:from-blue-700 hover:to-blue-600 transition-transform transform hover:scale-105"
+                onClick={(e) => TicketBuy(data._id, countTickets)}
+              >
+                🎟️ Buy Ticket
               </button>
 
-              <div className="flex  gap-2  items-center cursor-pointer "> 
-                
-                <p className="text-xl border rounded-lg px-2.5 py-1 bg-gray-300" onClick={IncreaseTickets}>+</p>
-                <p>{countTickets}</p>
-                <p className="text-xl border rounded-lg px-3 py-1 bg-gray-300" onClick={DecreaseTickets}>-</p>
+              {/* Ticket Counter */}
+              <div className="flex items-center gap-4">
+                <button
+                  className="w-10 h-10 flex items-center justify-center text-lg font-bold border rounded-full bg-gray-200 hover:bg-gray-300 transition cursor-pointer"
+                  onClick={IncreaseTickets}
+                >
+                  +
+                </button>
 
+                <p className="text-lg font-semibold text-gray-800">{countTickets}</p>
+
+                <button
+                  className="w-10 h-10 flex items-center justify-center text-lg font-bold border rounded-full bg-gray-200 hover:bg-gray-300 transition cursor-pointer"
+                  onClick={DecreaseTickets}
+                >
+                  –
+                </button>
               </div>
-             
             </div>
+
           </div>
         </div>
       )}
