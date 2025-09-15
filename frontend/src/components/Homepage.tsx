@@ -19,13 +19,12 @@ export default function HomePage() {
 
 
   function Logout() {
+
     Cookies.remove("token");
-
     localStorage.clear();
-    setIsAdmin(false);
     sessionStorage.clear();
+    setIsAdmin(false);
     navigate("/", { replace: true });
-
 
 
   }

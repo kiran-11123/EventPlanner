@@ -2,51 +2,51 @@ import { useState } from "react"
 import { useLocation } from "react-router-dom"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-export default function Update(){
+export default function Update() {
 
     const location = useLocation();
     const { eventData } = location.state || {};
-    const[Totaltickets , setTotaltickets] = useState(0);
-    const[EventDescription ,SetEventDescription] = useState('');
-    const[message , setMessage] = useState('');
+    const [Totaltickets, setTotaltickets] = useState(0);
+    const [EventDescription, SetEventDescription] = useState('');
+    const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
 
-    async function UpdateTickets(e:any) {
+    async function UpdateTickets(e: any) {
         e.preventDefault();
 
-        const response = await axios.post("http://localhost:5000/api/tickets/Tickets_Update" ,{
-             Event_id : eventData._id ,
-             tickets : Totaltickets,
-             description:EventDescription,
-        },{
-            withCredentials:true
+        const response = await axios.post("http://localhost:5000/api/tickets/Tickets_Update", {
+            Event_id: eventData._id,
+            tickets: Totaltickets,
+            description: EventDescription,
+        }, {
+            withCredentials: true
         })
 
-        if(response.status===200 && response.data.message === 'Tickets Updated Successfully'){
-               
+        if (response.status === 200 && response.data.message === 'Tickets Updated Successfully') {
+
             window.alert("Tickets Updated Successfully");
             navigate("/home")
-            
+
         }
 
-        else{
-              
+        else {
+
             setMessage(response.data.message);
-            setTimeout(()=>{
+            setTimeout(() => {
 
                 setMessage('');
 
-            },2000)
+            }, 2000)
         }
 
-      
+
 
     }
 
 
 
-    return(
+    return (
 
         <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 px-4">
 
@@ -61,7 +61,7 @@ export default function Update(){
                             Total Tickets
                         </label>
 
-                        <input  onChange={(e) => setTotaltickets(Number(e.target.value))} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"  placeholder="Enter total tickets" />
+                        <input onChange={(e) => setTotaltickets(Number(e.target.value))} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter total tickets" />
                     </div>
 
 
@@ -70,7 +70,7 @@ export default function Update(){
                             Description
                         </label>
 
-                        <input  onChange={(e) => SetEventDescription(e.target.value)} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"  placeholder="Enter Description" />
+                        <input onChange={(e) => SetEventDescription(e.target.value)} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter Description" />
                     </div>
 
 
@@ -78,10 +78,10 @@ export default function Update(){
                     <button className="text-center font-bold text-lg sm:xl  w-full rounded-lg bg-blue-500 text-white mb-5 px-3 py-2">
                         Update
                     </button>
-                     
+
                 </form>
 
-                 {message && (
+                {message && (
 
                     <p className="font-black text-center text-md sm:text-lg mb-10">{message}</p>
                 )}
@@ -89,8 +89,8 @@ export default function Update(){
 
 
             </div>
-           
+
         </div>
-         
+
     )
 }
