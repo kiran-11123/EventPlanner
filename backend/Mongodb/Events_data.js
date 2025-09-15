@@ -6,6 +6,7 @@ import mongoose from 'mongoose'
 const Events_details = new mongoose.Schema({
           EventName:String,
           EventImage:String,
+          EventDescrption:String,
           EventDate:String,
           Duration:String,
           Venue:String,
@@ -15,9 +16,11 @@ const Events_details = new mongoose.Schema({
           EventType:String,
           TotalTickets:Number,
           Price:Number,
-          Likes:Number,
+        
 
 })
+
+
 
 
 const Event_data = mongoose.model("Events_data" , Events_details);

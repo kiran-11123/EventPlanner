@@ -321,10 +321,12 @@ Ticket_Router.post("/cancelTicket", Authentication_token, async (req, res) => {
 
 Ticket_Router.post("/Tickets_Update", Authentication_token, async (req, res) => {
   try {
-    let { Event_id, tickets } = req.body;
+    let { Event_id, tickets ,description } = req.body;
 
     // Find event by ID
     const find_event = await Event_data.findById(Event_id);
+
+   
 
     if (!find_event) {
       return res.status(400).json({
@@ -334,6 +336,14 @@ Ticket_Router.post("/Tickets_Update", Authentication_token, async (req, res) => 
 
     // Ensure tickets is a number
     tickets = parseInt(tickets);
+
+     if(description.length>0){
+
+      find_event.EventDescrption = description;
+       await find_event.save();
+
+      
+    }
 
     // Update total tickets
     find_event.TotalTickets += tickets;

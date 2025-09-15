@@ -94,7 +94,7 @@ export default function Card({ data }: any) {
 
         {admin && (
           <button
-            className="mt-1 px-4 py-2 rounded-lg font-bold bg-blue-600 text-white hover:bg-blue-700 transition"
+            className="mt-1 px-4 py-2 rounded-lg font-mono bg-blue-600 text-white hover:bg-blue-700 transition"
             onClick={() => navigate("/update", { state: { eventData: data } })}
           >
             Update
@@ -132,8 +132,8 @@ export default function Card({ data }: any) {
                 <div className="flex  flex-col  flex-1 h-32  p-4  items-start  gap-2 ">
 
                   <p className="text-sm text-gray-500 w-full flex ">
-                    <span className="w-1/2 ">Event Description:</span>
-                    <span className="w-1/2 font-semibold text-black text-left">{data.EventDescription}</span>
+                    <span className="px-2">Event Description:</span>
+                    <span className=" font-semibold text-mono  text-left">{data.EventDescrption}</span>
                   </p>
 
                 </div>

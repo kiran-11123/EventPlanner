@@ -7,6 +7,7 @@ export default function Update(){
     const location = useLocation();
     const { eventData } = location.state || {};
     const[Totaltickets , setTotaltickets] = useState(0);
+    const[EventDescription ,SetEventDescription] = useState('');
     const[message , setMessage] = useState('');
     const navigate = useNavigate();
 
@@ -17,6 +18,7 @@ export default function Update(){
         const response = await axios.post("http://localhost:5000/api/tickets/Tickets_Update" ,{
              Event_id : eventData._id ,
              tickets : Totaltickets,
+             description:EventDescription,
         },{
             withCredentials:true
         })
@@ -60,6 +62,15 @@ export default function Update(){
                         </label>
 
                         <input  onChange={(e) => setTotaltickets(Number(e.target.value))} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"  placeholder="Enter total tickets" />
+                    </div>
+
+
+                    <div>
+                        <label className="font-bold text-lg sm:text-xl block mb-1">
+                            Description
+                        </label>
+
+                        <input  onChange={(e) => SetEventDescription(e.target.value)} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"  placeholder="Enter Description" />
                     </div>
 
 
