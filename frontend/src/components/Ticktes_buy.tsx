@@ -4,11 +4,11 @@ import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const Ticktes_buy = () => {
-  
+
   const navigate = useNavigate();
   const location = useLocation();
-  const { Tickets, Event_id ,Price } = location.state || {};
-  
+  const { Tickets, Event_id, Price } = location.state || {};
+
   const baseAmount = Price * Tickets;
   const cgst = baseAmount * 0.18;
   const sgst = baseAmount * 0.09;
@@ -18,127 +18,127 @@ const Ticktes_buy = () => {
 
   async function BuyTickets() {
 
-       
-     try{
 
-      const response  = await axios.post("http://localhost:5000/api/tickets/bookTickets",{
+    try {
+
+      const response = await axios.post("http://localhost:5000/api/tickets/bookTickets", {
 
         event_id: Event_id,
         tickets: Tickets,
-        TotalPrice : TotalPrice
+        TotalPrice: TotalPrice
 
-      },{
-           withCredentials: true
+      }, {
+        withCredentials: true
       })
 
-      if(response.status===200 && response.data.message=== "Tickets Booked Successfully"){
-           
-              window.alert("Tickets Booked Successfully , details sent to your mail");
+      if (response.status === 200 && response.data.message === "Tickets Booked Successfully") {
 
-             /* const eventDetails = `
+        window.alert("Tickets Booked Successfully , details sent to your mail");
 
-              Event Name: ${response.data.event.event_name}
-              Booked By : ${response.data.event.BookedBy}
-              Date: ${response.data.event.event_date}
-              Venue: ${response.data.event.venue}
-              Tickets Booked: ${response.data.event.tickets}
-              Total Price: ${response.data.event.totalPrice}
-              `;
+        /* const eventDetails = `
 
-             
-              const blob = new Blob([eventDetails], { type: "text/plain" });
-              const url = URL.createObjectURL(blob);
+         Event Name: ${response.data.event.event_name}
+         Booked By : ${response.data.event.BookedBy}
+         Date: ${response.data.event.event_date}
+         Venue: ${response.data.event.venue}
+         Tickets Booked: ${response.data.event.tickets}
+         Total Price: ${response.data.event.totalPrice}
+         `;
 
-             
-              const link = document.createElement("a");
-              link.href = url;
-              link.download = `${response.data.event.event_name}_Booking_Details.txt`; 
-              link.click();
+        
+         const blob = new Blob([eventDetails], { type: "text/plain" });
+         const url = URL.createObjectURL(blob);
 
-              URL.revokeObjectURL(url);
-              */
+        
+         const link = document.createElement("a");
+         link.href = url;
+         link.download = `${response.data.event.event_name}_Booking_Details.txt`; 
+         link.click();
 
-             setTimeout(() => navigate("/home"), 500);
+         URL.revokeObjectURL(url);
+         */
+
+        setTimeout(() => navigate("/home"), 500);
 
       }
-      else{
-           
+      else {
+
         window.alert("Payment failed")
       }
 
-     }
-     catch(er){
-         
-        console.log(er);
-        window.alert("Something went wrong")
-     }
-    
+    }
+    catch (er) {
+
+      console.log(er);
+      window.alert("Something went wrong")
+    }
+
   }
   return (
-                <div className="flex flex-col items-center py-10 bg-white px-4 mt-10">
-          {/* Payment Details */}
-          <div className="w-full max-w-md sm:max-w-lg rounded-2xl shadow-xl bg-gray-100 p-8">
-            <h1 className="text-lg sm:text-xl font-bold text-center border-b pb-3 mb-5">
-              Payment Details
-            </h1>
+    <div className="flex flex-col items-center py-10 bg-white px-4 mt-10">
+      {/* Payment Details */}
+      <div className="w-full max-w-md sm:max-w-lg rounded-2xl shadow-xl bg-gray-100 p-8">
+        <h1 className="text-lg sm:text-xl font-bold text-center border-b pb-3 mb-5">
+          Payment Details
+        </h1>
 
-            <div className="divide-y">
-              <div className="flex justify-between py-3">
-                <p className="font-semibold">Total Tickets</p>
-                <p>{Tickets}</p>
-              </div>
-
-              <div className="flex justify-between py-3">
-                <p className="font-semibold">Price</p>
-                <p>$ {Price}</p>
-              </div>
-
-              <div className="flex justify-between py-3">
-                <p className="font-semibold">CGST</p>
-                <p>$ {cgst}</p>
-              </div>
-
-              <div className="flex justify-between py-3">
-                <p className="font-semibold">SGST</p>
-                <p>$ {sgst}</p>
-              </div>
-
-              <div className="flex justify-between py-3 font-bold text-green-600">
-                <p>Total Pay</p>
-                <p>$ {TotalPrice}</p>
-              </div>
-            </div>
+        <div className="divide-y">
+          <div className="flex justify-between py-3">
+            <p className="font-semibold">Total Tickets</p>
+            <p>{Tickets}</p>
           </div>
 
-          {/* Payment Methods */}
-          <div className="mt-10 w-full max-w-md sm:max-w-3xl bg-gray-300 shadow-lg rounded-md px-5 py-4 
-                          grid grid-cols-2 gap-4 sm:flex sm:flex-row sm:justify-evenly sm:items-center">
-            <button
-              className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-              onClick={BuyTickets}
-            >
-              PhonePe
-            </button>
-            <button
-              className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-              onClick={BuyTickets}
-            >
-              GPay
-            </button>
-            <button
-              className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-              onClick={BuyTickets}
-            >
-              Debit Card
-            </button>
-            <button
-              className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-              onClick={BuyTickets}
-            >
-              Credit Card
-            </button>
+          <div className="flex justify-between py-3">
+            <p className="font-semibold">Price</p>
+            <p>$ {Price}</p>
+          </div>
+
+          <div className="flex justify-between py-3">
+            <p className="font-semibold">CGST</p>
+            <p>$ {cgst}</p>
+          </div>
+
+          <div className="flex justify-between py-3">
+            <p className="font-semibold">SGST</p>
+            <p>$ {sgst}</p>
+          </div>
+
+          <div className="flex justify-between py-3 font-bold text-green-600">
+            <p>Total Pay</p>
+            <p>$ {TotalPrice}</p>
           </div>
         </div>
+      </div>
+
+      {/* Payment Methods */}
+      <div className="mt-10 w-full max-w-md sm:max-w-3xl bg-gray-300 shadow-lg rounded-md px-5 py-4 
+                          grid grid-cols-2 gap-4 sm:flex sm:flex-row sm:justify-evenly sm:items-center">
+        <button
+          className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+          onClick={BuyTickets}
+        >
+          PhonePe
+        </button>
+        <button
+          className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+          onClick={BuyTickets}
+        >
+          GPay
+        </button>
+        <button
+          className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+          onClick={BuyTickets}
+        >
+          Debit Card
+        </button>
+        <button
+          className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+          onClick={BuyTickets}
+        >
+          Credit Card
+        </button>
+      </div>
+    </div>
 
 
   )
