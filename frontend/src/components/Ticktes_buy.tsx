@@ -111,34 +111,35 @@ const Ticktes_buy = () => {
       </div>
 
       {/* Payment Methods */}
-      <div className="mt-10 w-full max-w-md sm:max-w-3xl bg-gray-300 shadow-lg rounded-md px-5 py-4 
-                          grid grid-cols-2 gap-4 sm:flex sm:flex-row sm:justify-evenly sm:items-center">
-        <button
-          className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-          onClick={BuyTickets}
-        >
-          PhonePe
-        </button>
-        <button
-          className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-          onClick={BuyTickets}
-        >
-          GPay
-        </button>
-        <button
-          className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-          onClick={BuyTickets}
-        >
-          Debit Card
-        </button>
-        <button
-          className="w-full px-2 py-2 sm:px-4 rounded-md bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-          onClick={BuyTickets}
-        >
-          Credit Card
-        </button>
-      </div>
-    </div>
+      <div className="mt-10 w-full max-w-md sm:max-w-lg bg-gray-300 shadow-lg rounded-md px-5 py-4 
+                grid grid-cols-2 gap-4 sm:flex sm:flex-row sm:justify-evenly sm:items-center">
+  <button
+    className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+    onClick={BuyTickets}
+  >
+    <img src="phonepe.png" alt="PhonePe" className="h-10 mx-auto mb-1" />
+  </button>
+  <button
+    className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+    onClick={BuyTickets}
+  >
+    <img src="gpay.png" alt="GPay" className="h-10 mx-auto mb-1 rounded-full" />
+  </button>
+  <button
+    className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+    onClick={BuyTickets}
+  >
+    <img src="paytm.jpg" alt="PayTm" className="h-10 mx-auto mb-1 rounded-full" />
+  </button>
+  <button
+    className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+    onClick={BuyTickets}
+  >
+    <img src="debit.jpg" alt="Card" className="h-10 mx-auto mb-1 rounded-full" />
+  </button>
+</div>
+
+</div>
 
 
   )
