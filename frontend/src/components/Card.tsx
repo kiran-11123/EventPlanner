@@ -66,7 +66,7 @@ export default function Card({ data }: any) {
   }
 
   return (
-    <div className="relative flex flex-col gap-4 items-center bg-white shadow-xl rounded-xl p-6 w-full max-w-sm sm:max-w-md hover:outline-1">
+    <div className="relative flex flex-col gap-4 items-center bg-white shadow-xl rounded-xl p-6 w-full max-w-sm  hover:outline-1">
       {/* Image */}
       <div className="w-full h-60 rounded-lg overflow-hidden border-2 ">
         <img
