@@ -15,6 +15,10 @@ const Ticktes_buy = () => {
 
   const TotalPrice = baseAmount + cgst + sgst;
 
+  function GoToHome() {
+    navigate("/home" ,{ replace: true });
+  }
+
 
   async function BuyTickets() {
 
@@ -82,64 +86,71 @@ const Ticktes_buy = () => {
           Payment Details
         </h1>
 
-        <div className="divide-y">
-          <div className="flex justify-between py-3">
-            <p className="font-semibold">Total Tickets</p>
-            <p>{Tickets}</p>
-          </div>
+       <table className="w-full max-w-md border border-gray-300 shadow-md rounded-xl">
+  <tbody className="bg-gray-200">
+    <tr>
+      <th className="border px-4 py-2 text-left bg-gray-300">Total Tickets</th>
+      <td className="border px-4 py-2 text-left">{Tickets}</td>
+    </tr>
+    <tr>
+      <th className="border px-4 py-2 text-left bg-gray-300">Price</th>
+      <td className="border px-4 py-2 text-left"> ₹ {Price} </td>
+    </tr>
+    <tr>
+      <th className="border px-4 py-2 text-left bg-gray-300">CGST</th>
+      <td className="border px-4 py-2 text-left"> ₹ {cgst} </td>
+    </tr>
+    <tr>
+      <th className="border px-4 py-2 text-left bg-gray-300">SGST</th>
+      <td className="border px-4 py-2 text-left"> ₹ {sgst} </td>
+    </tr>
+    <tr>
+      <th className="border px-4 py-2 text-left bg-gray-300">Total Pay</th>
+      <td className="border px-4 py-2 text-left"> ₹ {TotalPrice} </td>
+    </tr>
+    <tr>
+      <th className="border px-4 py-2 text-left bg-gray-300">Cancel Ticket</th>
+      <td className="border px-4 py-2">
+        <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700" onClick={GoToHome}>
+          Cancel
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-          <div className="flex justify-between py-3">
-            <p className="font-semibold">Price</p>
-            <p>$ {Price}</p>
-          </div>
-
-          <div className="flex justify-between py-3">
-            <p className="font-semibold">CGST</p>
-            <p>$ {cgst}</p>
-          </div>
-
-          <div className="flex justify-between py-3">
-            <p className="font-semibold">SGST</p>
-            <p>$ {sgst}</p>
-          </div>
-
-          <div className="flex justify-between py-3 font-bold text-green-600">
-            <p>Total Pay</p>
-            <p>$ {TotalPrice}</p>
-          </div>
-        </div>
-      </div>
+</div>
 
       {/* Payment Methods */}
-      <div className="mt-10 w-full max-w-md sm:max-w-lg bg-gray-300 shadow-lg rounded-md px-5 py-4 
+      <div className="mt-10 w-full max-w-md sm:max-w-lg bg-gray-300 shadow-lg rounded-md px-4 py-2 
                 grid grid-cols-2 gap-4 sm:flex sm:flex-row sm:justify-evenly sm:items-center">
-  <button
-    className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-    onClick={BuyTickets}
-  >
-    <img src="phonepe.png" alt="PhonePe" className="h-10 mx-auto mb-1" />
-  </button>
-  <button
-    className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-    onClick={BuyTickets}
-  >
-    <img src="gpay.png" alt="GPay" className="h-10 mx-auto mb-1 rounded-full" />
-  </button>
-  <button
-    className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-    onClick={BuyTickets}
-  >
-    <img src="paytm.jpg" alt="PayTm" className="h-10 mx-auto mb-1 rounded-full" />
-  </button>
-  <button
-    className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-    onClick={BuyTickets}
-  >
-    <img src="debit.jpg" alt="Card" className="h-10 mx-auto mb-1 rounded-full" />
-  </button>
-</div>
+        <button
+          className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+          onClick={BuyTickets}
+        >
+          <img src="phonepe.png" alt="PhonePe" className="h-10 mx-auto mb-1" />
+        </button>
+        <button
+          className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+          onClick={BuyTickets}
+        >
+          <img src="gpay.png" alt="GPay" className="h-10 mx-auto mb-1 rounded-full" />
+        </button>
+        <button
+          className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+          onClick={BuyTickets}
+        >
+          <img src="paytm.jpg" alt="PayTm" className="h-10 mx-auto mb-1 rounded-full" />
+        </button>
+        <button
+          className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
+          onClick={BuyTickets}
+        >
+          <img src="debit.jpg" alt="Card" className="h-10 mx-auto mb-1 rounded-full" />
+        </button>
+      </div>
 
-</div>
+    </div>
 
 
   )
