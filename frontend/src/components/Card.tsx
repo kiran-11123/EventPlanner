@@ -129,11 +129,11 @@ export default function Card({ data }: any) {
 
                 </div>
 
-                <div className="flex  flex-col  flex-1 h-32  p-4  items-start  gap-2 ">
+                <div className="flex    flex-col  flex-1 h-32  p-4  items-start  gap-2 ">
 
-                  <p className="text-sm text-gray-500 w-full flex ">
+                  <p className="text-sm text-gray-500 w-full   hidden sm:block">
                     <span className="px-2">Event Description:</span>
-                    <span className=" font-semibold text-mono  text-left">{data.EventDescrption}</span>
+                    <span className=" font-semibold text-mono text-sm text-left">{data.EventDescrption}</span>
                   </p>
 
                 </div>

@@ -20,40 +20,40 @@ Ticket_Router.use(bodyParser.urlencoded({ extended: true }));
 
 
 
-Ticket_Router.post("/tickets_info" , Authentication_token , async(req,res)=>{
+Ticket_Router.post("/tickets_info", Authentication_token, async (req, res) => {
 
-   
-    const {query , Tickets} = req.body;
-   
 
-    if(!mongoose.Types.ObjectId.isValid(query)){
-        return res.status(400).json({
-            message:"Invalid Event ID"
-        });
-    }
+  const { query, Tickets } = req.body;
 
-    const event_id = new mongoose.Types.ObjectId(query);
 
-    const find_query = await Event_data.find({_id:event_id});
+  if (!mongoose.Types.ObjectId.isValid(query)) {
+    return res.status(400).json({
+      message: "Invalid Event ID"
+    });
+  }
 
-    if(!find_query){
-         return res.status(404).json({
-            message:"Event Not Found"
-         })
-    }
+  const event_id = new mongoose.Types.ObjectId(query);
 
-    const ticket_count = parseInt(Tickets);
+  const find_query = await Event_data.find({ _id: event_id });
 
-    if(find_query.TotalTickets < ticket_count ){
-         return res.status(400).json({
-            message:`only ${find_query.TotalTickets} left`
-         })
-    }
-
-    return res.status(200).json({
-        message:"Go for the Payment"
+  if (!find_query) {
+    return res.status(404).json({
+      message: "Event Not Found"
     })
-       
+  }
+
+  const ticket_count = parseInt(Tickets);
+
+  if (find_query.TotalTickets < ticket_count) {
+    return res.status(400).json({
+      message: `only ${find_query.TotalTickets} left`
+    })
+  }
+
+  return res.status(200).json({
+    message: "Go for the Payment"
+  })
+
 })
 
 
@@ -211,8 +211,8 @@ Ticket_Router.post("/cancelTicket", Authentication_token, async (req, res) => {
   try {
     let { event_id, history_id } = req.body;
 
-     const email = req.user.email;
-   
+    const email = req.user.email;
+
 
     if (
       !mongoose.Types.ObjectId.isValid(event_id) ||
@@ -271,7 +271,7 @@ Ticket_Router.post("/cancelTicket", Authentication_token, async (req, res) => {
     historyItem.Status = "Cancelled";
     await userHistory.save();
 
-     let mailOptions = {
+    let mailOptions = {
       from: "eventnest.official.main@gmail.com",
       to: email,
       subject: `🎟️ Ticket Cancellation for the show ${historyItem.EventName}`,
@@ -321,12 +321,12 @@ Ticket_Router.post("/cancelTicket", Authentication_token, async (req, res) => {
 
 Ticket_Router.post("/Tickets_Update", Authentication_token, async (req, res) => {
   try {
-    let { Event_id, tickets ,description } = req.body;
+    let { Event_id, tickets, description } = req.body;
 
     // Find event by ID
     const find_event = await Event_data.findById(Event_id);
 
-   
+
 
     if (!find_event) {
       return res.status(400).json({
@@ -337,12 +337,12 @@ Ticket_Router.post("/Tickets_Update", Authentication_token, async (req, res) => 
     // Ensure tickets is a number
     tickets = parseInt(tickets);
 
-     if(description.length>0){
+    if (description.length > 0) {
 
       find_event.EventDescrption = description;
-       await find_event.save();
+      await find_event.save();
 
-      
+
     }
 
     // Update total tickets
