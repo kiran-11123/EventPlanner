@@ -26,12 +26,33 @@ AllEvents_Router.get("/allEvents", Authentication_token,async ( req,res)=>{
             
             
         }
+
+       const filteredData = AllData.filter((e)=>{
+
+         if(e.EventDate==="everyday"){
+
+            return true;
+
+         }
+
+           
+          else {
+            const parts = e.EventDate.split("-");
+            const date = new Date(parts[2], parts[1] - 1, parts[0]);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            return date>today;
+
+            }
+
+        })
       
 
 
         return res.status(200).json({
             message:"Events are Listed",
-            TotalData:AllData
+            TotalData:filteredData
         })
 
 
