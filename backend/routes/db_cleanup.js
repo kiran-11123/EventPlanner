@@ -1,4 +1,5 @@
 import Event_data from "../Mongodb/Events_data";
+import cron from 'node-cron'
 
 async function cleanup() {
 
@@ -37,4 +38,7 @@ async function cleanup() {
     }
 }
 
-cleanup();
+cron.schedule("0 0 1 * *",()=>{
+     console.log("Running monthly DB cleanup job...")
+     cleanup().catch(console.error);
+})
