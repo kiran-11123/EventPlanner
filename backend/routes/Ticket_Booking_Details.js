@@ -70,7 +70,7 @@ const generateQRCode = (data) => {
 
 Ticket_Router.post("/bookTickets", Authentication_token, async (req, res) => {
   try {
-    let { event_id, tickets, TotalPrice } = req.body;
+    let { event_id, tickets, TotalPrice ,mode } = req.body;
     const email = req.user.email;
 
     if (!mongoose.Types.ObjectId.isValid(event_id)) {
@@ -105,6 +105,7 @@ Ticket_Router.post("/bookTickets", Authentication_token, async (req, res) => {
       Totaltickets: tickets,
       Status: "Booked",
       bookedAt: new Date(),
+      mode:mode,
     };
 
     if (!find_user) {
@@ -158,6 +159,10 @@ Ticket_Router.post("/bookTickets", Authentication_token, async (req, res) => {
               <td style="padding: 10px; font-weight: bold; background-color: #e8f5e9;">Booked By:</td>
               <td style="padding: 10px; background-color: #ffffff;">${req.user.username}</td>
             </tr>
+              <tr>
+              <td style="padding: 10px; font-weight: bold; background-color: #e8f5e9;">Payment Mode :</td>
+              <td style="padding: 10px; background-color: #ffffff;">${mode}</td>
+            </tr>
             <tr>
               <td style="padding: 10px; font-weight: bold; background-color: #e8f5e9;">Unique Ticket ID:</td>
               <td style="padding: 10px; background-color: #ffffff;">${randomData}</td>
@@ -195,6 +200,7 @@ Ticket_Router.post("/bookTickets", Authentication_token, async (req, res) => {
         tickets: tickets,
         totalPrice: TotalPrice,
         BookedBy: req.user.username,
+        mode:mode,
       },
     });
   } catch (error) {

@@ -22,6 +22,7 @@ const User_Details = new mongoose.Schema({
           EndTime:String,
           Totaltickets:Number,
           Status:String,
+          mode:String,
             
             
            

@@ -20,7 +20,7 @@ const Ticktes_buy = () => {
   }
 
 
-  async function BuyTickets() {
+  async function BuyTickets(PaymentMode:String) {
 
 
     try {
@@ -29,7 +29,8 @@ const Ticktes_buy = () => {
 
         event_id: Event_id,
         tickets: Tickets,
-        TotalPrice: TotalPrice
+        TotalPrice: TotalPrice,
+        mode:PaymentMode,
 
       }, {
         withCredentials: true
@@ -126,25 +127,25 @@ const Ticktes_buy = () => {
                 grid grid-cols-2 gap-4 sm:flex sm:flex-row sm:justify-evenly sm:items-center">
         <button
           className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-          onClick={BuyTickets}
+          onClick={() => BuyTickets("PhonePe")}
         >
           <img src="phonepe.png" alt="PhonePe" className="h-10 mx-auto mb-1" />
         </button>
         <button
           className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-          onClick={BuyTickets}
+          onClick={()=>BuyTickets("Gpay")}
         >
           <img src="gpay.png" alt="GPay" className="h-10 mx-auto mb-1 rounded-full" />
         </button>
         <button
           className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-          onClick={BuyTickets}
+          onClick={()=>BuyTickets("PayTm")}
         >
           <img src="paytm.jpg" alt="PayTm" className="h-10 mx-auto mb-1 rounded-full" />
         </button>
         <button
           className="w-full sm:w-20 px-1 py-2 rounded-xl bg-blue-500 text-white shadow-md font-semibold hover:bg-blue-700"
-          onClick={BuyTickets}
+          onClick={()=>BuyTickets("Card")}
         >
           <img src="debit.jpg" alt="Card" className="h-10 mx-auto mb-1 rounded-full" />
         </button>
